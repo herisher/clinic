@@ -1,0 +1,70 @@
+10
+
+dir
+0
+http://svn.altavindo.com/svn/repos/trunk/home/sites/88admin/www/js/datatables
+http://svn.altavindo.com/svn/repos
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+369634b5-919c-41f3-a6fe-3375a5a710b1
+
+dataTables.bootstrap.js
+file
+
+
+
+add
+
+dataTables.bootstrap.min.js
+file
+
+
+
+add
+
+dataTables.bootstrap_versi_lama.js
+file
+
+
+
+add
+
+dataTables.responsive.js
+file
+
+
+
+add
+
+jquery.dataTables.js
+file
+
+
+
+add
+
+jquery.dataTables.min.js
+file
+
+
+
+add
+

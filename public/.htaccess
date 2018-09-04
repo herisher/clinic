@@ -1,0 +1,25 @@
+php_value upload_max_filesize 20M
+php_value post_max_size 20M
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^index\.php$ - [L]
+#RewriteCond %{REQUEST_FILENAME} -s [OR]
+#RewriteCond %{REQUEST_FILENAME} -l [OR]
+#RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+
+RewriteRule \.(css|js)$ - [L,E=X_CACHE_PATTERN4:]
+RewriteRule \.(?:gif|jpe?g|png|ico)$ - [L,E=X_CACHE_PATTERN4:]
+#Header set Cache-Control "max-age=86400" env=X_CACHE_PATTERN4
+</IfModule>
+
+# basic authentication
+# AuthType Basic
+# AuthName "Please input ID and password."
+# AuthUserFile /var/www/webapps/projects/propertidata/.htpasswd
+# Require valid-user
