@@ -31,12 +31,12 @@ $config = array(
         array(
             'field' => 'patient_dob',
             'label' => 'Tanggal Lahir',
-            'rules' => '',
+            'rules' => 'required',
             ),
         array(
             'field' => 'address',
             'label' => 'Alamat',
-            'rules' => 'required',
+            'rules' => '',
             ),
         array(
             'field' => 'phone_number',
@@ -68,12 +68,12 @@ $config = array(
         array(
             'field' => 'patient_dob',
             'label' => 'Tanggal Lahir',
-            'rules' => '',
+            'rules' => 'required',
             ),
         array(
             'field' => 'address',
             'label' => 'Alamat',
-            'rules' => 'required',
+            'rules' => '',
             ),
         array(
             'field' => 'phone_number',
@@ -129,12 +129,12 @@ $config = array(
         array(
             'field' => 'patient_dob',
             'label' => 'Tanggal Lahir',
-            'rules' => '',
+            'rules' => 'required',
             ),
         array(
             'field' => 'address',
             'label' => 'Alamat',
-            'rules' => 'required',
+            'rules' => '',
             ),
         array(
             'field' => 'phone_number',
@@ -179,6 +179,83 @@ $config = array(
         array(
             'field' => 'transaction_date',
             'label' => 'Tanggal Periksa',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'biaya_medis',
+            'label' => 'Biaya Periksa',
+            'rules' => 'required',
+            ),
+    ),
+    '/system/cashier/new' => array(
+        array(
+            'field' => 'anamnesis',
+            'label' => 'No. Rekam Medis',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'patient_name',
+            'label' => 'Nama Pasien',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'patient_sex',
+            'label' => 'Jenis Kelamin',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'patient_dob',
+            'label' => 'Tanggal Lahir',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'address',
+            'label' => 'Alamat',
+            'rules' => '',
+            ),
+        array(
+            'field' => 'phone_number',
+            'label' => 'No. Telepon',
+            'rules' => '',
+            ),
+        array(
+            'field' => 'mobile_number',
+            'label' => 'No. Telepon HP',
+            'rules' => '',
+            ),
+        array(
+            'field' => 'transaction_date',
+            'label' => 'Tanggal Periksa',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'transaction_no',
+            'label' => 'No. Transaksi',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'doctor_id',
+            'label' => 'Dokter',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'payment_status',
+            'label' => 'Status Pembayaran',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'biaya_admin',
+            'label' => 'Biaya Admin',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'biaya_obat',
+            'label' => 'Biaya Obat',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'total_biaya',
+            'label' => 'Total Biaya',
             'rules' => 'required',
             ),
         array(

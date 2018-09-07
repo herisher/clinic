@@ -66,7 +66,7 @@
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">No. Rekam Medis*</label>
                                 <div class="col-sm-6">
-                                        <input class="form-control" readonly="readonly" type="text" name="anamnesis" placeholder="No. Rekam Medis" id="anamnesis" value="<?=set_value('anamnesis', $patient['anamnesis'])?> " >
+                                        <input class="form-control" type="text" name="anamnesis" placeholder="No. Rekam Medis" id="anamnesis" value="<?=set_value('anamnesis', $patient['anamnesis'])?> " >
                                         <?php echo form_error('anamnesis', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Tanggal Lahir*</label>
+                                    <label class="col-sm-5 control-label">Tanggal Lahir</label>
                                 <div class="col-sm-6">
                                         <input class="form-control" type="text" name="patient_dob" placeholder="Tanggal Lahir" id="patient_dob" value="<?=set_value('patient_dob', $patient['patient_dob'])?>" >
                                         <?php echo form_error('patient_dob', '<font color="#FF0000">', '</font>'); ?>

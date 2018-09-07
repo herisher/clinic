@@ -29,6 +29,7 @@ class Patient extends MY_Controller {
         $this->load->vars('next', 0);
         $this->load->model('Logic_patient');
         $this->load->vars('sex_option', $this->Logic_patient->static_sex());
+        $this->load->vars('anamnesis', $this->Logic_patient->getCodeGenerated());
 
         if ($this->input->is_post()) {
             if ($this->form_validation->run('/system/patient/new')) {

@@ -29,7 +29,7 @@ class Logic_patient extends CI_Model {
         $this->load->model("Logic_data_tables");
         $query = "SELECT * FROM dtb_patient WHERE is_deleted = 0"; 
         $countquery = "SELECT count(*) as total FROM dtb_patient WHERE is_deleted = 0"; 
-        $columns = array('patient_id', 'anamnesis', 'patient_name', 'address');
+        $columns = array('patient_id', 'anamnesis', 'patient_name', 'patient_dob');
         $dbcolumns = $columns;
 
         $retval = $this->Logic_data_tables->ajax_data_tables($query, $countquery, $columns, $dbcolumns, 'patient_index');
@@ -39,7 +39,8 @@ class Logic_patient extends CI_Model {
     public function get_patient_by_id($pid)
     {
         $models = $this->db->query("SELECT * FROM dtb_patient WHERE patient_id = ?", $pid)->row_array();
-        $models["patient_ages"] = date("Y-m-d") - $models["patient_dob"] . " Tahun";
+        //$models["patient_ages"] = date("Y-m-d") - $models["patient_dob"] . " Tahun";
+        $models["patient_ages"] = date_diff(date_create($models["patient_dob"]), date_create('today'))->y . " Tahun";
         return json_encode($models);
     }
     
@@ -91,5 +92,27 @@ class Logic_patient extends CI_Model {
         }
         
         return $datas;
+    }
+	
+    public function getCodeGenerated(){
+		$model = $this->db->query("SELECT anamnesis FROM dtb_patient ORDER BY patient_id DESC LIMIT 1")->row_array();
+		$value = "NRM0001";
+		if( $model ) {
+			$value = $model["anamnesis"] + 1;
+			$sub = substr($model["anamnesis"], 1, 4); //.0000
+			$subs = $sub+'1';
+			if( $subs>0 && $subs<=9 ) {
+				$nmr = "000".$subs;
+			} elseif( $subs>9 && $subs<=99 ) {
+				$nmr = "00".$subs;
+			} elseif( $subs>99 && $subs<=999 ) {
+				$nmr = "0".$subs;
+			} elseif( $subs>999 && $subs<=9999 ) {
+				$nmr = $subs;
+			}
+			$value = "NRM" . $nmr;
+		}
+		
+		return $value;
     }
 }

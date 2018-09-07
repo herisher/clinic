@@ -1,41 +1,35 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Checkup extends MY_Controller {
+class Cashier extends MY_Controller {
 
     public function index_action()
     {
         $this->load->model('Logic_admin');
-        $this->Logic_admin->check_permission(103,1);
+        $this->Logic_admin->check_permission(104,1);
         
         $datas = $this->db->query("SELECT * FROM dtb_transaction")->result_array();
         $this->load->vars("datas",$datas);
-        $this->load->view("system/checkup/index");
+        $this->load->view("system/cashier/index");
     }
     
-    public function ajax_get_checkup_list_action(){
+    public function ajax_get_cashier_list_action(){
         $this->load->model("Logic_transaction");
-        $ret = $this->Logic_transaction->get_transaction_list();
-        echo $ret;
-    }
-
-    public function ajax_get_patient_action(){
-		$pid = $_POST["patient_id"];
-        $this->load->model("Logic_patient");
-        $ret = $this->Logic_patient->get_patient_by_id($pid);
+        $ret = $this->Logic_transaction->get_cashier_list();
         echo $ret;
     }
 
     public function new_action()
     {
         $this->load->model('Logic_admin');
-        $this->Logic_admin->check_permission(103,1);
+        $this->Logic_admin->check_permission(104,1);
         
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->vars('next', 0);
         $this->load->model('Logic_transaction');
-        
+        $this->load->vars('transaction_no', $this->Logic_transaction->getCodeGenerated());
+
         $this->load->model('Logic_doctor');
         $this->load->vars('doctor_option', $this->Logic_doctor->get_all_by_id());
         $this->load->vars('doctor_id', $this->session->login_admin["login_doctor_id"]);
@@ -45,54 +39,54 @@ class Checkup extends MY_Controller {
         $this->load->vars('sex_option', $this->Logic_patient->static_sex());
 
         if ($this->input->is_post()) {
-            if ($this->form_validation->run('/system/checkup/new')) {
-                $this->Logic_transaction->do_process_registration();
+            if ($this->form_validation->run('/system/cashier/new')) {
+                $this->Logic_transaction->processUpdateCashier();
                 $this->load->vars('next', 1);
             } else {
                 $this->load->vars('next', 0);
             }
         } else {
-            $this->form_validation->run('/system/checkup/new');
+            $this->form_validation->run('/system/cashier/new');
         }
 
-        $this->load->view('system/checkup/new.php');
+        $this->load->view('system/cashier/new.php');
     }
 
     public function detail_action()
     {
         $this->load->model('Logic_admin');
-        $this->Logic_admin->check_permission(103,1);
+        $this->Logic_admin->check_permission(104,1);
         
         $id = $this->uri->segment(4);
-        $this->load->vars('transaction_id', $id);
+        $this->load->vars('cashier_id', $id);
 
         $this->load->model('Logic_transaction');
-        $checkup = $this->db->query("SELECT * FROM dtb_transaction where transaction_id = ".$this->db->escape_str($id))->row_array();
-        $this->load->vars('checkup', $checkup);
+        $cashier = $this->db->query("SELECT * FROM dtb_cashier where cashier_id = ".$this->db->escape_str($id))->row_array();
+        $this->load->vars('cashier', $cashier);
         
-        $this->load->view('system/checkup/detail.php');
+        $this->load->view('system/cashier/detail.php');
     }
 
     public function edit_action()
     {
         $this->load->model('Logic_admin');
-        $this->Logic_admin->check_permission(103,1);
+        $this->Logic_admin->check_permission(104,1);
         
         $id = $this->uri->segment(4);
-        $this->load->vars('checkup_id', $id);
+        $this->load->vars('cashier_id', $id);
         
-        $model = $this->db->query("SELECT * from dtb_transaction where dtb_transaction.checkup_id = ? ", $id)->row_array();
+        $model = $this->db->query("SELECT * from dtb_cashier where dtb_cashier.cashier_id = ? ", $id)->row_array();
         if (!$model) {
             show_error('This data is deleted or not exists.');
             exit;
         }
-        $checkup = $this->db->query("SELECT * FROM dtb_transaction where checkup_id = ".$this->db->escape_str($id))->row_array();
-        $this->load->vars('checkup', $checkup);
+        $cashier = $this->db->query("SELECT * FROM dtb_cashier where cashier_id = ".$this->db->escape_str($id))->row_array();
+        $this->load->vars('cashier', $cashier);
 
         $this->load->helper('form');
         $this->load->library('form_validation');
         if ($this->input->is_post()) {
-            if ($this->form_validation->run('/system/checkup/checkup_edit')) {
+            if ($this->form_validation->run('/system/cashier/cashier_edit')) {
                 $this->load->model('Logic_transaction');
                 $this->Logic_transaction->processUpdate();
                 $this->load->vars('next', 1);
@@ -100,33 +94,33 @@ class Checkup extends MY_Controller {
                 $this->load->vars('next', 0);
             }
         } else {
-            $this->form_validation->run('/system/checkup/checkup_edit');
+            $this->form_validation->run('/system/cashier/cashier_edit');
         }
-        $this->load->view('system/checkup/edit.php');
+        $this->load->view('system/cashier/edit.php');
     }
 
     public function delete_action()
     {
         $this->load->model('Logic_admin');
-        $this->Logic_admin->check_permission(103,1);
+        $this->Logic_admin->check_permission(104,1);
         
-        $this->load->vars('checkup_id', $this->uri->segment(4));
+        $this->load->vars('cashier_id', $this->uri->segment(4));
 
         //Menampilkan data sebelumnya
         $page = $this->uri->segment(4);
-        $datas = $this->db->query("SELECT * FROM dtb_transaction WHERE checkup_id = ?", $page)->row_array();
+        $datas = $this->db->query("SELECT * FROM dtb_cashier WHERE cashier_id = ?", $page)->row_array();
         
          if($this->input->post("submit") == "YES" ){
             $data = array(
                 'is_deleted'    => 1,
                 'update_date'   => date("Y-m-d H:i:s"),
             );
-            $this->db->update("dtb_transaction",$data,"checkup_id = ".$datas['checkup_id']);
+            $this->db->update("dtb_cashier",$data,"cashier_id = ".$datas['cashier_id']);
             $this->load->vars('next', 1);
         }
 
         $this->load->vars("datas",$datas);
-        $this->load->view('system/checkup/delete');
+        $this->load->view('system/cashier/delete');
     }
     
     public function csv_action() {
@@ -153,14 +147,14 @@ class Checkup extends MY_Controller {
             $where = "";
         }
 
-        $models = $this->db->query("SELECT checkup_id, name, phone, payment_period FROM dtb_transaction" . $where)->result_array();
+        $models = $this->db->query("SELECT cashier_id, name, phone, payment_period FROM dtb_cashier" . $where)->result_array();
 
         // ヘッダ出力
         header('Content-type: application/octet-stream');
         if (preg_match("/MSIE 8\.0/", $_SERVER['HTTP_USER_AGENT'])) {
-            header('Content-Disposition: filename=checkup-' . time() . '.csv');
+            header('Content-Disposition: filename=cashier-' . time() . '.csv');
         } else {
-            header('Content-Disposition: attachment; filename=checkup-' . time() . '.csv');
+            header('Content-Disposition: attachment; filename=cashier-' . time() . '.csv');
         }
         header('Pragma: public');
         header('Cache-control: public');
@@ -176,7 +170,7 @@ class Checkup extends MY_Controller {
             $no++;
             
             foreach($item as $key => $i) {
-                if($key == 'checkup_id') {
+                if($key == 'cashier_id') {
                     array_push($cols, '"'.$no.'"');
                 }
                 else {

@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <label class="col-sm-5 control-label">No. Rekam Medis*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="anamnesis" placeholder="No. Rekam Medis" id="anamnesis" value="<?php echo set_value('anamnesis', ''); ?>" >
+                                    <input class="form-control" type="text" name="anamnesis" placeholder="No. Rekam Medis" readonly="readonly" id="anamnesis" value="<?php echo set_value('anamnesis', $anamnesis); ?>" >
                                     <?php echo form_error('anamnesis', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
@@ -104,14 +104,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Tanggal Lahir</label>
+                                    <label class="col-sm-5 control-label">Tanggal Lahir*</label>
                                 <div class="col-sm-6">
                                     <input class="form-control" type="text" name="patient_dob" placeholder="Tanggal Lahir" id="patient_dob" value="<?php echo set_value('patient_dob', ''); ?>">
                                     <?php echo form_error('patient_dob', '<br><font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Alamat*</label>
+                                    <label class="col-sm-5 control-label">Alamat</label>
                                 <div class="col-sm-6">
                                     <textarea class="form-control" type="text" name="address" placeholder="Alamat" id="address"><?php echo set_value('address', ''); ?></textarea>
                                     <?php echo form_error('address', '<br><font color="#FF0000">', '</font>'); ?>

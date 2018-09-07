@@ -54,21 +54,21 @@
             <div class="box box-solid box-gold">
                 <div class="box-header fixed">
                     <h3 class="box-title">
-                        New Pemeriksaan
+                        New Transaksi
                     </h3>
                 </div>
                 <div class="box-body">
                     <ol class="breadcrumb">
-                        <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Pemeriksaan</a></li>
-                        <li class="active"> New Pemeriksaan</li>
+                        <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Transaksi</a></li>
+                        <li class="active"> New Transaksi</li>
                     </ol>
-            <form name="form2" action="<?php echo base_url();?>system/checkup/new" method="post" enctype="multipart/form-data">
+            <form name="form2" action="<?php echo base_url() ?>system/cashier/new" method="post" enctype="multipart/form-data">
             
             <section class="content">
                 <div class="container-form">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <h3 class="" style="margin-bottom: 20px;"><strong>Pemeriksaan Pasien</strong></h3>
+                            <h3 class="" style="margin-bottom: 20px;"><strong>Transaksi</strong></h3>
                         </div>
                     </div>
                     <div class="row">
@@ -91,8 +91,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-default btnAdd">Pilih</button>&nbsp;&nbsp;&nbsp;atau&nbsp;&nbsp;&nbsp;
-                            <button type="button" class="btn btn-default btnNew">Buat Baru</button>
+                            <button type="button" class="btn btn-default btnAdd">Pilih</button><!--&nbsp;&nbsp;&nbsp;atau&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-default btnNew">Buat Baru</button-->
                         </div>
                     </div>
                 </div>
@@ -170,65 +170,26 @@
                 </div>
                 <hr>
                 <!-- ROW 3-->
-                <h4 style="margin-bottom: 10px;"><strong>Data Pemeriksaan</strong></h4>
+                <h4 style="margin-bottom: 10px;"><strong>Data Transaksi</strong></h4>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-sm-5 control-label">Keluhan*</label>
+                                <label class="col-sm-5 control-label">No. Transaksi*</label>
                                 <div class="col-sm-6">
-                                    <textarea class="form-control" type="text" name="keluhan" placeholder="Keluhan" id="keluhan"><?php echo set_value('keluhan', ''); ?></textarea>
-                                    <?php echo form_error('keluhan', '<font color="#FF0000">', '</font>'); ?>
+                                    <input class="form-control" type="text" readonly="readonly" name="transaction_no" placeholder="No. Transaksi" id="transaction_no" value="<?php echo set_value('transaction_no', $transaction_no); ?>">
+                                    <?php echo form_error('transaction_no', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-5 control-label">Diagnosa*</label>
-                                <div class="col-sm-6">
-                                    <textarea class="form-control" type="text" name="diagnosa" placeholder="Diagnosa" id="diagnosa"><?php echo set_value('diagnosa', ''); ?></textarea>
-                                    <?php echo form_error('diagnosa', '<font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Tindakan / Pengobatan*</label>
-                                <div class="col-sm-6">
-                                    <textarea class="form-control" type="text" name="tindakan" placeholder="Tindakan / Pengobatan" id="tindakan"><?php echo set_value('tindakan', ''); ?></textarea>
-                                    <?php echo form_error('tindakan', '<font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Layanan Tambahan</label>
-                                <div class="col-sm-6">
-                                    <textarea class="form-control" type="text" name="layanan_tambahan" placeholder="Layanan Tambahan" id="layanan_tambahan"><?php echo set_value('layanan_tambahan', ''); ?></textarea>
-                                    <?php echo form_error('layanan_tambahan', '<br><font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Keterangan Tambahan</label>
-                                <div class="col-sm-6">
-                                    <textarea class="form-control" type="text" name="keterangan" placeholder="Keterangan Tambahan" id="keterangan"><?php echo set_value('keterangan', ''); ?></textarea>
-                                    <?php echo form_error('keterangan', '<br><font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Alergi Obat</label>
-                                <div class="col-sm-6">
-                                    <textarea class="form-control" type="text" name="alergi_obat" placeholder="Alergi Obat" id="alergi_obat"><?php echo set_value('alergi_obat', ''); ?></textarea>
-                                    <?php echo form_error('alergi_obat', '<br><font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Tanggal Periksa</label>
+                                    <label class="col-sm-5 control-label">Tanggal Periksa*</label>
                                 <div class="col-sm-6">
                                     <input class="form-control" type="text" name="transaction_date" placeholder="Tanggal Periksa" id="transaction_date" value="<?php echo set_value('transaction_date', ''); ?>">
-                                    <?php echo form_error('transaction_date', '<br><font color="#FF0000">', '</font>'); ?>
+                                    <?php echo form_error('transaction_date', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Dokter Pemeriksa</label>
+                                    <label class="col-sm-5 control-label">Dokter Pemeriksa*</label>
                                 <div class="col-sm-6">
                                     <select class="form-control" type="text" name="doctor_id" id="doctor_id" <?php if($doctor_id) echo 'readonly="readonly"'; ?>>
                                         <option value="" <?php echo set_select("doctor_id",''); ?>>-Pilih-</option>
@@ -240,6 +201,29 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                    <label class="col-sm-5 control-label">Status Pembayaran*</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" type="text" name="payment_status" id="payment_status" <?php if($doctor_id) echo 'readonly="readonly"'; ?>>
+                                        <option value="" <?php echo set_select("payment_status",''); ?>>-Pilih-</option>
+                                        <?php foreach( $status_option as $key => $val ) : ?>
+                                        <option value="<?= $key ?>" <?php echo set_select("payment_status",$key); ?>><?= $val ?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                    <?php echo form_error('payment_status', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                    <label class="col-sm-5 control-label">Biaya Admin*</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="text" name="biaya_admin" placeholder="Biaya Admin" id="biaya_admin" value="<?php echo set_value('biaya_admin', ''); ?>">
+                                    <?php echo form_error('biaya_admin', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                     <label class="col-sm-5 control-label">Biaya Periksa*</label>
                                 <div class="col-sm-6">
                                     <input class="form-control" type="text" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', ''); ?>">
@@ -247,16 +231,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Dokumen Penunjang</label>
+                                    <label class="col-sm-5 control-label">Biaya Obat*</label>
                                 <div class="col-sm-6">
-                                    <input id="document_fileid" name="document_fileid" type="file" multiple=true>
-                                    <?php if(isset($data['document_fileid'])): ?>
-                                    <div id="view" class="collapse">
-                                        <img src="<?php echo base_url();?>upload/doc/<?= $data['document_fileid']?>" alt="Smiley face" height="100%" width="100%">
-                                        <h5><?= $data['document_fileid']?></h5>
-                                    </div>
-                                    <a class="btn btn-primary" data-toggle="collapse" data-target="#view" aria-expanded="false" ><i class="fa fa-search-plus"></i>View</a>
-                                    <?php endif; ?>
+                                    <input class="form-control" type="text" name="biaya_obat" placeholder="Biaya Obat" id="biaya_obat" value="<?php echo set_value('biaya_obat', ''); ?>">
+                                    <?php echo form_error('biaya_obat', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label class="col-sm-5 control-label">Total Biaya*</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="text" name="total_biaya" readonly="readonly" placeholder="Total Biaya" id="total_biaya" value="<?php echo set_value('total_biaya', ''); ?>">
+                                    <?php echo form_error('total_biaya', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                         </div>
@@ -304,7 +289,10 @@ function windowClose() {
   });
 </script>
 <script>
-    $('#patient_dob').datepicker({dateFormat: "yy-mm-dd",});
+    $('#cashier_dob').datepicker({dateFormat: "yy-mm-dd",});
+</script>
+<script>
+    $("#document_fileid").fileinput({'showUpload':false});
 </script>
 <script>
     $("#patient_id").select2({
@@ -315,14 +303,13 @@ function windowClose() {
     $(function () {
         $("#data_pasien").hide();
         $(".btnAdd").click(function(){
-            console.log("btnAdd clicked");
             var patient_id = $("#patient_id").val();
             $.ajax({ url: "/system/checkup/ajax-get-patient",
                 data: {"patient_id":patient_id},
                 dataType: 'json',
                 type: 'post',
                 success: function(output) {
-                    console.log(output);
+                    //console.log(output);
                     $("#data_pasien").show();
                     $(".clsDob").hide();
                     $(".clsAges").show();

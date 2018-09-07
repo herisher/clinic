@@ -14,9 +14,21 @@ class Logic_transaction extends CI_Model {
     public function get_transaction_list()
     {
         $this->load->model("Logic_data_tables");
-        $query = "SELECT dt.*, dp.anamnesis, dp.patient_name, dp.address FROM dtb_transaction dt JOIN dtb_patient dp ON dt.patient_id = dp.patient_id WHERE 1"; 
+        $query = "SELECT dt.*, dp.anamnesis, dp.patient_name, dp.patient_dob FROM dtb_transaction dt JOIN dtb_patient dp ON dt.patient_id = dp.patient_id WHERE 1"; 
         $countquery = "SELECT count(*) as total FROM dtb_transaction dt JOIN dtb_patient dp ON dt.patient_id = dp.patient_id WHERE 1"; 
-        $columns = array('transaction_id', 'transaction_date', 'anamnesis', 'patient_name', 'address');
+        $columns = array('transaction_id', 'transaction_date', 'transaction_no', 'anamnesis', 'patient_name', 'patient_dob');
+        $dbcolumns = $columns;
+
+        $retval = $this->Logic_data_tables->ajax_data_tables($query, $countquery, $columns, $dbcolumns, 'transaction_index');
+        return $retval;
+    }
+    
+    public function get_cashier_list()
+    {
+        $this->load->model("Logic_data_tables");
+        $query = "SELECT dt.*, dp.anamnesis, dp.patient_name, dp.patient_dob FROM dtb_transaction dt JOIN dtb_patient dp ON dt.patient_id = dp.patient_id WHERE payment_status = 0"; 
+        $countquery = "SELECT count(*) as total FROM dtb_transaction dt JOIN dtb_patient dp ON dt.patient_id = dp.patient_id WHERE is_cashier = 1";
+        $columns = array('transaction_id', 'transaction_date', 'anamnesis', 'patient_name', 'patient_dob');
         $dbcolumns = $columns;
 
         $retval = $this->Logic_data_tables->ajax_data_tables($query, $countquery, $columns, $dbcolumns, 'transaction_index');
@@ -62,6 +74,23 @@ class Logic_transaction extends CI_Model {
         );
         $this->db->update("dtb_transaction",$datas,"transaction_id = '$id'".$this->input->get_post('transaction_id'));
     }
+
+    public function processUpdateCashier(){
+        $id= $this->input->get_post('transaction_id');
+
+        $datas = array(
+            'transaction_date'  => $this->input->get_post('transaction_date'),
+            'transaction_no'    => $this->input->get_post('transaction_no'),
+            'biaya_admin'       => $this->input->get_post('biaya_admin'),
+            'biaya_periksa'     => $this->input->get_post('biaya_periksa'),
+            'biaya_obat'        => $this->input->get_post('biaya_obat'),
+            'total_biaya'       => $this->input->get_post('total_biaya'),
+            'payment_status'    => $this->input->get_post('payment_status'),
+            'is_cashier'        => 1,
+            'update_date'       => date("Y-m-d H:i:s"),
+        );
+        $this->db->update("dtb_transaction",$datas,"transaction_id = '$id'".$this->input->get_post('transaction_id'));
+    }
     
     public function get_all_by_id( $id = "" ) {
         $models = $this->db->query("SELECT transaction_id, anamnesis FROM dtb_transaction dt JOIN dtb_patient dp ON dt.patient_id = dp.patient_id")->result_array();
@@ -76,5 +105,27 @@ class Logic_transaction extends CI_Model {
         }
         
         return $datas;
+    }
+	
+    public function getCodeGenerated(){
+		$model = $this->db->query("SELECT transaction_no FROM dtb_transaction ORDER BY transaction_id DESC LIMIT 1")->row_array();
+		$value = "TRX0001";
+		if( $model ) {
+			$value = $model["transaction_no"] + 1;
+			$sub = substr($model["transaction_no"], 1, 4); //.0000
+			$subs = $sub+'1';
+			if( $subs>0 && $subs<=9 ) {
+				$nmr = "000".$subs;
+			} elseif( $subs>9 && $subs<=99 ) {
+				$nmr = "00".$subs;
+			} elseif( $subs>99 && $subs<=999 ) {
+				$nmr = "0".$subs;
+			} elseif( $subs>999 && $subs<=9999 ) {
+				$nmr = $subs;
+			}
+			$value = "TRX" . $nmr;
+		}
+		
+		return $value;
     }
 }

@@ -7,7 +7,7 @@
 <aside class="right-side">
     <section class="content-header">
         <h1>
-            <i class="fa fa-medkit">&nbsp;</i>  Pemeriksaan
+            <i class="fa fa-money">&nbsp;</i>  Kasir
         </h1>
     </section>
     <section class="content">
@@ -16,9 +16,9 @@
                 <div class="box box-gold">
                     <div class="box-body">
                         <ol class="breadcrumb ">
-                            <li> <i class="fa fa-medkit">&nbsp;</i> Pemeriksaan</a></li>
+                            <li> <i class="fa fa-money">&nbsp;</i> Kasir</a></li>
                         </ol>
-						<form action="/system/checkup/csv" method="POST">
+						<form action="/system/cashier/csv" method="POST">
                         <div id="advance-search" class="collapse">
                             <div class="well">
                                 <!--ROW 1-->
@@ -31,6 +31,12 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
+                                            <label class="control-label">No. Transaksi</label>
+                                            <input id="transaction_no" class="form-control " type="text" placeholder="No. Transaksi" value="" name="transaction_no" data-column="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
                                             <label class="control-label">No. Rekam Medis</label>
                                             <input id="anamnesis" class="form-control " type="text" placeholder="No. Rekam Medis" value="" name="anamnesis" data-column="2"/>
                                         </div>
@@ -38,7 +44,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group" id="filter_col1" data-column="1">
                                             <label class="control-label" >Nama Pasien</label>
-                                            <input id="checkup_name" class="form-control" type="text" placeholder="Nama Pasien" value="" name="checkup_name" data-column="3"/>
+                                            <input id="cashier_name" class="form-control" type="text" placeholder="Nama Pasien" value="" name="cashier_name" data-column="3"/>
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +69,7 @@
                         <p>
                             <a class="btn btn-primary" id="btn-advsearch" data-toggle="collapse" data-target="#advance-search" aria-expanded="false" ><i class="fa fa-search-plus"></i> &nbsp; Advance Search </a>
                             <!--button type="submit" value="submit" class="btn btn-primary" target="_blank" ><i class="fa fa-download"></i> &nbsp; Download CSV</button-->
-                            <button type="button" href="<?php echo base_url();?>system/checkup/new" class="btn btn-primary pull-right" onclick="window.open('<?php echo base_url();?>system/checkup/new', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;"><i class="fa fa-file"></i> &nbsp; New Pemeriksaan</button>
+                            <button type="button" href="<?php echo base_url();?>system/cashier/new" class="btn btn-primary pull-right" onclick="window.open('<?php echo base_url();?>system/cashier/new', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;"><i class="fa fa-file"></i> &nbsp; New Transaksi</button>
                         </p>
 						</form>
                         <br>
@@ -93,6 +99,7 @@
                                 <tr>
                                     <th class="col-sm-1">No</th>
                                     <th>Tanggal Periksa</th>
+                                    <th>No. Transaksi</th>
                                     <th>No. Rekam Medis</th>
                                     <th>Nama Pasien</th>
                                     <th>Tanggal Lahir</th>
@@ -132,16 +139,17 @@
         "bServerSide": true,
         "bJQueryUI": false,
         "responsive": true,
-        "sAjaxSource": "<?php echo base_url() . "system/checkup/ajax_get_checkup_list/"; ?>", // Load Data
+        "sAjaxSource": "<?php echo base_url() . "system/cashier/ajax_get_cashier_list/"; ?>", // Load Data
         "sServerMethod": "POST",
         "columnDefs": [
             { "orderable": true, "targets": 0, "searchable": true }, //No
             { "orderable": true, "targets": 1, "searchable": true }, //Transaction Date
-            { "orderable": true, "targets": 2, "searchable": true }, //Anamnesis
-            { "orderable": true, "targets": 3, "searchable": true }, //Name
-            { "orderable": true, "targets": 4, "searchable": true }, //DOB
-			{ "orderable": false, "targets": 5, "searchable": false }, //Edit
-			{ "orderable": false, "targets": 6, "searchable": false } //Delete
+            { "orderable": true, "targets": 2, "searchable": true }, //Transaction No.
+            { "orderable": true, "targets": 3, "searchable": true }, //Anamnesis
+            { "orderable": true, "targets": 4, "searchable": true }, //Name
+			{ "orderable": true, "targets": 5, "searchable": true }, //DOB
+			{ "orderable": false, "targets": 6, "searchable": false }, //Edit
+            { "orderable": false, "targets": 7, "searchable": false } //Delete
         ],
 			"order": [[ 0, "desc" ]]
     });

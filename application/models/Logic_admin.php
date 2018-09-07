@@ -49,6 +49,7 @@ class Logic_admin extends CI_Model {
                                             array(  'id'                    => $login_admin['id'],
                                                     'login_admin_username'  => $login_admin["username"],
                                                     'login_admin_type'      => $admintype,
+                                                    'login_doctor_id'       => $login_admin['doctor_id'],
                                                     'login_admin_type_new'  => $types));
 			$this->load->vars('login_admin', $login_admin);
 

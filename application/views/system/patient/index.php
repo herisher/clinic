@@ -1,10 +1,13 @@
 <?php require_once APPPATH.'views/system/header.php'; ?>
 <?php require_once APPPATH.'views/system/sidebar.php'; ?>
 
+<script src="<?php echo base_url() ?>js/jquery-ui/jquery-ui.js" type="text/javascript"></script>
+<link href="<?php echo base_url() ?>css/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css" />
+
 <aside class="right-side">
     <section class="content-header">
         <h1>
-            <i class="fa fa-user">&nbsp;</i>  Pasien
+            <i class="fa fa-heart">&nbsp;</i>  Pasien
         </h1>
     </section>
     <section class="content">
@@ -13,7 +16,7 @@
                 <div class="box box-gold">
                     <div class="box-body">
                         <ol class="breadcrumb ">
-                            <li> <i class="fa fa-user">&nbsp;</i> Pasien</a></li>
+                            <li> <i class="fa fa-heart">&nbsp;</i> Pasien</a></li>
                         </ol>
 						<form action="/system/patient/csv" method="POST">
                         <div id="advance-search" class="collapse">
@@ -34,8 +37,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group" id="filter_col1" data-column="1">
-                                            <label class="control-label" >Alamat</label>
-                                            <input id="address" class="form-control" type="text" placeholder="Alamat" value="" name="address" data-column="3"/>
+                                            <label class="control-label" >Tanggal Lahir</label>
+                                            <input id="patient_dob" class="form-control" type="text" placeholder="Alamat" value="" name="patient_dob" data-column="3"/>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -50,7 +53,7 @@
                         </div>
                         <p>
                             <a class="btn btn-primary" id="btn-advsearch" data-toggle="collapse" data-target="#advance-search" aria-expanded="false" ><i class="fa fa-search-plus"></i> &nbsp; Advance Search </a>
-                            <button type="submit" value="submit" class="btn btn-primary" target="_blank" ><i class="fa fa-download"></i> &nbsp; Download CSV</button>
+                            <!--button type="submit" value="submit" class="btn btn-primary" target="_blank" ><i class="fa fa-download"></i> &nbsp; Download CSV</button-->
                             <button type="button" href="<?php echo base_url();?>system/patient/new" class="btn btn-primary pull-right" onclick="window.open('<?php echo base_url();?>system/patient/new', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;"><i class="fa fa-file"></i> &nbsp; New Pasien</button>
                         </p>
 						</form>
@@ -82,7 +85,7 @@
                                     <th class="col-sm-1">No</th>
                                     <th>No. Rekam Medis</th>
                                     <th>Nama Pasien</th>
-                                    <th>Address</th>
+                                    <th>Tanggal Lahir</th>
                                     <th class="col-sm-1">Edit</th>
                                     <th class="col-sm-1">Delete</th>
                                 </tr>
@@ -100,6 +103,10 @@
     </section>
     <div class="control-sidebar-bg"></div>
 </aside>
+
+<script>
+    $('#patient_dob').datepicker({dateFormat: "yy-mm-dd",});
+</script>
 
 <script>
     var dTable;
@@ -120,7 +127,7 @@
             { "orderable": true, "targets": 0, "searchable": true }, //No
             { "orderable": true, "targets": 1, "searchable": true }, //Anamnesis
             { "orderable": true, "targets": 2, "searchable": true }, //Name
-            { "orderable": true, "targets": 3, "searchable": true }, //Address
+            { "orderable": true, "targets": 3, "searchable": true }, //Patient dob
 			{ "orderable": false, "targets": 4, "searchable": false }, //Edit
 			{ "orderable": false, "targets": 5, "searchable": false } //Delete
         ],
@@ -140,7 +147,7 @@
         .search( this.value )
         .draw();
 	} );
-	$('#address').on( 'keyup', function () {
+	$('#patient_dob').on( 'keyup', function () {
     dTable
         .columns( 3 )
         .search( this.value )

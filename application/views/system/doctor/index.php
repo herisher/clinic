@@ -4,7 +4,7 @@
 <aside class="right-side">
     <section class="content-header">
         <h1>
-            <i class="fa fa-user">&nbsp;</i>  Dokter
+            <i class="fa fa-stethoscope">&nbsp;</i>  Dokter
         </h1>
     </section>
     <section class="content">
@@ -13,7 +13,7 @@
                 <div class="box box-gold">
                     <div class="box-body">
                         <ol class="breadcrumb ">
-                            <li> <i class="fa fa-user">&nbsp;</i> Dokter</a></li>
+                            <li> <i class="fa fa-stethoscope">&nbsp;</i> Dokter</a></li>
                         </ol>
 						<form action="/system/doctor/csv" method="POST">
                         <div id="advance-search" class="collapse">
@@ -38,7 +38,7 @@
                         </div>
                         <p>
                             <a class="btn btn-primary" id="btn-advsearch" data-toggle="collapse" data-target="#advance-search" aria-expanded="false" ><i class="fa fa-search-plus"></i> &nbsp; Advance Search </a>
-                            <button type="submit" value="submit" class="btn btn-primary" target="_blank" ><i class="fa fa-download"></i> &nbsp; Download CSV</button>
+                            <!--button type="submit" value="submit" class="btn btn-primary" target="_blank" ><i class="fa fa-download"></i> &nbsp; Download CSV</button-->
                             <button type="button" href="<?php echo base_url();?>system/doctor/new" class="btn btn-primary pull-right" onclick="window.open('<?php echo base_url();?>system/doctor/new', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;"><i class="fa fa-file"></i> &nbsp; New Dokter</button>
                         </p>
 						</form>
