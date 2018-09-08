@@ -96,8 +96,8 @@
                                     <th>No. Rekam Medis</th>
                                     <th>Nama Pasien</th>
                                     <th>Tanggal Lahir</th>
-                                    <th class="col-sm-1">Edit</th>
-                                    <th class="col-sm-1">Delete</th>
+                                    <!--th class="col-sm-1">Edit</th-->
+                                    <!--th class="col-sm-1">Delete</th-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -139,9 +139,9 @@
             { "orderable": true, "targets": 1, "searchable": true }, //Transaction Date
             { "orderable": true, "targets": 2, "searchable": true }, //Anamnesis
             { "orderable": true, "targets": 3, "searchable": true }, //Name
-            { "orderable": true, "targets": 4, "searchable": true }, //DOB
-			{ "orderable": false, "targets": 5, "searchable": false }, //Edit
-			{ "orderable": false, "targets": 6, "searchable": false } //Delete
+            { "orderable": true, "targets": 4, "searchable": true } //DOB
+//			{ "orderable": false, "targets": 5, "searchable": false }, //Edit
+			//{ "orderable": false, "targets": 6, "searchable": false } //Delete
         ],
 			"order": [[ 0, "desc" ]]
     });

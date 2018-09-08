@@ -24,20 +24,21 @@
                 <div class="box box-solid box-gold">
                     <div class="box-header fixed">
                         <h3 class="box-title">
-                            Detail Pasien
+                            Detail Transaksi
                         </h3>
                     </div>
                     
                     <div class="box-body">
                         <ol class="breadcrumb">
-                            <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Pasien</a></li>
-                            <li class="active"> Detail Pasien</li>
+                            <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Cashier</a></li>
+                            <li class="active"> Detail Transaksi</li>
                         </ol>
                         <section class="content">
                             <div class="container-form">
                                 <div class="row">
                                     <hr>
                                     <!--ROW 1-->
+                                    <h4 style="margin-bottom: 10px;"><strong>Data Pasien</strong></h4>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-horizontal">
@@ -62,15 +63,13 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-5 control-label">Tanggal Lahir</label>
                                                     <div class="col-sm-6">
-                                                        <h5><?= $patient['patient_dob'] ? $patient['patient_dob'] . " (". $patient["ages"] ." Tahun)" : '-'?></h5>
+                                                        <h5><?= $patient['patient_dob'] ? $patient['patient_dob'] . " (". $patient["ages"].")" : '-'?></h5>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Alamat</label>
-                                                    <div class="col-sm-6">
-                                                        <h5> <?= $patient['address'] ? $patient['address'] : '-'?> </h5>
-                                                    </div>
-                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-horizontal">
                                                 <div class="form-group">
                                                     <label class="col-sm-5 control-label">No. Telepon</label>
                                                     <div class="col-sm-6">
@@ -83,13 +82,80 @@
                                                         <h5> <?= $patient['mobile_number'] ? $patient['mobile_number'] : '-'?> </h5>
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Alamat</label>
+                                                    <div class="col-sm-6">
+                                                        <h5> <?= $patient['address'] ? $patient['address'] : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!--ROW 1-->
+                                    <h4 style="margin-bottom: 10px;"><strong>Data Transaksi</strong></h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">No. Transaksi</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $cashier['transaction_no'] ? $cashier['transaction_no'] : '-'?></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Tanggal Periksa</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $cashier['transaction_date'] ? $cashier['transaction_date'] : '-'?></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Dokter Pemeriksa</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $doctor['doctor_name'] ? $doctor['doctor_name'] : '-'?></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Status Pembayaran</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $cashier['disp_status'] ? $cashier['disp_status'] : '-'?></h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Biaya Admin (Rp)</label>
+                                                    <div class="col-sm-6">
+                                                        <h5> <?= $cashier['biaya_admin'] ? number_format($cashier['biaya_admin']) : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Biaya Periksa (Rp)</label>
+                                                    <div class="col-sm-6">
+                                                        <h5> <?= $cashier['biaya_medis'] ? number_format($cashier['biaya_medis']) : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Biaya Obat (Rp)</label>
+                                                    <div class="col-sm-6">
+                                                        <h5> <?= $cashier['biaya_obat'] ? number_format($cashier['biaya_obat']) : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Total Biaya (Rp)</label>
+                                                    <div class="col-sm-6">
+                                                        <h5> <?= $cashier['total_biaya'] ? number_format($cashier['total_biaya']) : '-'?> </h5>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <p class="text-center">
                                             <a href="#" onclick="javascript:self.close();" class="btn btn-danger"><i class="fa fa-remove">&nbsp;</i> Close</a>
-                                            <a href="<?php echo base_url();?>system/patient/edit/<?php echo $patient['patient_id']?>" class="btn btn-primary" onclick="window.open('<?php echo base_url();?>system/patient/edit/<?php echo $patient['patient_id']?>', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;" id="<?= $patient['patient_id']?>"><i class="fa fa-pencil">&nbsp;</i> Edit</a>
+                                            <!--a href="<?php echo base_url();?>system/patient/edit/<?php echo $patient['patient_id']?>" class="btn btn-primary" onclick="window.open('<?php echo base_url();?>system/patient/edit/<?php echo $patient['patient_id']?>', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;" id="<?= $patient['patient_id']?>"><i class="fa fa-pencil">&nbsp;</i> Edit</a-->
                                         </p>
                                     </div>
                                 </div>

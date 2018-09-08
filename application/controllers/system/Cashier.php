@@ -8,6 +8,9 @@ class Cashier extends MY_Controller {
         $this->load->model('Logic_admin');
         $this->Logic_admin->check_permission(104,1);
         
+        $this->load->model('Logic_transaction');
+        $this->load->vars('status_option', $this->Logic_transaction->static_status());
+        
         $datas = $this->db->query("SELECT * FROM dtb_transaction")->result_array();
         $this->load->vars("datas",$datas);
         $this->load->view("system/cashier/index");
@@ -16,6 +19,13 @@ class Cashier extends MY_Controller {
     public function ajax_get_cashier_list_action(){
         $this->load->model("Logic_transaction");
         $ret = $this->Logic_transaction->get_cashier_list();
+        echo $ret;
+    }
+
+    public function ajax_get_transaction_action(){
+		$pid = $_POST["patient_id"];
+        $this->load->model("Logic_transaction");
+        $ret = $this->Logic_transaction->get_transaction_by_patient($pid);
         echo $ret;
     }
 
@@ -29,6 +39,7 @@ class Cashier extends MY_Controller {
         $this->load->vars('next', 0);
         $this->load->model('Logic_transaction');
         $this->load->vars('transaction_no', $this->Logic_transaction->getCodeGenerated());
+        $this->load->vars('status_option', $this->Logic_transaction->static_status());
 
         $this->load->model('Logic_doctor');
         $this->load->vars('doctor_option', $this->Logic_doctor->get_all_by_id());
@@ -61,8 +72,18 @@ class Cashier extends MY_Controller {
         $this->load->vars('cashier_id', $id);
 
         $this->load->model('Logic_transaction');
-        $cashier = $this->db->query("SELECT * FROM dtb_cashier where cashier_id = ".$this->db->escape_str($id))->row_array();
+        $cashier = $this->db->query("SELECT * FROM dtb_transaction where transaction_id = ".$this->db->escape_str($id))->row_array();
+        $cashier["disp_status"] = $this->Logic_transaction->static_status($cashier["payment_status"]);
         $this->load->vars('cashier', $cashier);
+        
+        $this->load->model('Logic_patient');
+        $patient = $this->db->query("SELECT * FROM dtb_patient where patient_id = ?", $this->db->escape_str($cashier['patient_id']))->row_array();
+        $patient["disp_sex"] = $this->Logic_patient->static_sex($patient["patient_sex"]);
+        $patient["ages"] = date_diff(date_create($patient["patient_dob"]), date_create('today'))->y . " Tahun";
+        $this->load->vars('patient', $patient);
+        
+        $doctor = $this->db->query("SELECT * FROM dtb_doctor where doctor_id = ?", $this->db->escape_str($cashier['doctor_id']))->row_array();
+        $this->load->vars('doctor', $doctor);
         
         $this->load->view('system/cashier/detail.php');
     }

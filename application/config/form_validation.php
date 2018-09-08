@@ -182,6 +182,11 @@ $config = array(
             'rules' => 'required',
             ),
         array(
+            'field' => 'doctor_id',
+            'label' => 'Dokter',
+            'rules' => 'required',
+            ),
+        array(
             'field' => 'biaya_medis',
             'label' => 'Biaya Periksa',
             'rules' => 'required',

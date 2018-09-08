@@ -32,30 +32,43 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label">No. Transaksi</label>
-                                            <input id="transaction_no" class="form-control " type="text" placeholder="No. Transaksi" value="" name="transaction_no" data-column="1"/>
+                                            <input id="transaction_no" class="form-control " type="text" placeholder="No. Transaksi" value="" name="transaction_no" data-column="2"/>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">No. Rekam Medis</label>
-                                            <input id="anamnesis" class="form-control " type="text" placeholder="No. Rekam Medis" value="" name="anamnesis" data-column="2"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group" id="filter_col1" data-column="1">
-                                            <label class="control-label" >Nama Pasien</label>
-                                            <input id="cashier_name" class="form-control" type="text" placeholder="Nama Pasien" value="" name="cashier_name" data-column="3"/>
+                                            <label class="control-label">Status Pembayaran</label>
+                                            <select class="form-control" type="text" data-column="7" name="payment_status" id="payment_status">
+                                                <option value="">-Pilih-</option>
+                                                <?php foreach( $status_option as $key => $val ) : ?>
+                                                <option value="<?= $key ?>"><?= $val ?></option>
+                                                <?php endforeach;?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <!--ROW 2-->
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="form-group" id="filter_col1" data-column="1">
-                                            <label class="control-label" >Tanggal Lahir</label>
-                                            <input id="patient_dob" class="form-control" type="text" placeholder="Tanggal Lahir" value="" name="patient_dob" data-column="4"/>
+                                        <div class="form-group">
+                                            <label class="control-label">No. Rekam Medis</label>
+                                            <input id="anamnesis" class="form-control " type="text" placeholder="No. Rekam Medis" value="" name="anamnesis" data-column="3"/>
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label" >Nama Pasien</label>
+                                            <input id="cashier_name" class="form-control" type="text" placeholder="Nama Pasien" value="" name="cashier_name" data-column="4"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label" >Tanggal Lahir</label>
+                                            <input id="patient_dob" class="form-control" type="text" placeholder="Tanggal Lahir" value="" name="patient_dob" data-column="5"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <div class="input-group pull-right" style="margin-top: 15px;">
@@ -103,8 +116,8 @@
                                     <th>No. Rekam Medis</th>
                                     <th>Nama Pasien</th>
                                     <th>Tanggal Lahir</th>
-                                    <th class="col-sm-1">Edit</th>
-                                    <th class="col-sm-1">Delete</th>
+                                    <th>Total Biaya (Rp)</th>
+                                    <th class="col-sm-1">Status Pembayaran</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -128,7 +141,7 @@
 
 <script>
     var dTable;
-    $.fn.dataTable.ext.errMode = 'throw';
+    //$.fn.dataTable.ext.errMode = 'throw';
     $(document).ready(function() {
 		
     dTable = $('#index_table').DataTable( {
@@ -148,8 +161,8 @@
             { "orderable": true, "targets": 3, "searchable": true }, //Anamnesis
             { "orderable": true, "targets": 4, "searchable": true }, //Name
 			{ "orderable": true, "targets": 5, "searchable": true }, //DOB
-			{ "orderable": false, "targets": 6, "searchable": false }, //Edit
-            { "orderable": false, "targets": 7, "searchable": false } //Delete
+			{ "orderable": false, "targets": 6, "searchable": false }, //total
+            { "orderable": true, "targets": 7, "searchable": true } //payment status
         ],
 			"order": [[ 0, "desc" ]]
     });
@@ -161,21 +174,33 @@
         .search( this.value )
         .draw();
 	} );
-	$('#anamnesis').on( 'keyup', function () {
+	$('#transaction_no').on( 'keyup', function () {
     dTable
         .columns( 2 )
         .search( this.value )
         .draw();
 	} );
-	$('#patient_name').on( 'keyup', function () {
+	$('#payment_status').on( 'change', function () {
+    dTable
+        .columns( 7 )
+        .search( this.value )
+        .draw();
+	} );
+	$('#anamnesis').on( 'keyup', function () {
     dTable
         .columns( 3 )
         .search( this.value )
         .draw();
 	} );
-	$('#patient_dob').on( 'keyup', function () {
+	$('#patient_name').on( 'keyup', function () {
     dTable
         .columns( 4 )
+        .search( this.value )
+        .draw();
+	} );
+	$('#patient_dob').on( 'keyup', function () {
+    dTable
+        .columns( 5 )
         .search( this.value )
         .draw();
 	} );
@@ -186,13 +211,6 @@
         .draw();
     } );
     
-    <?php //disabling edit n delete button for admin
-        if( !$login_admin["type"] ) : ?>
-        for ( var i=-2 ; i<=-1 ; i++ ) {
-            dTable.column( i ).visible( false, false );
-        }
-        dTable.columns.adjust().draw(false); // adjust column sizing and redraw
-    <?php endif; ?>
     });
 </script>
 

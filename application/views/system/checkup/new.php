@@ -228,7 +228,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Dokter Pemeriksa</label>
+                                    <label class="col-sm-5 control-label">Dokter Pemeriksa*</label>
                                 <div class="col-sm-6">
                                     <select class="form-control" type="text" name="doctor_id" id="doctor_id" <?php if($doctor_id) echo 'readonly="readonly"'; ?>>
                                         <option value="" <?php echo set_select("doctor_id",''); ?>>-Pilih-</option>
@@ -242,14 +242,14 @@
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">Biaya Periksa*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', ''); ?>">
+                                    <input class="form-control" type="number" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', ''); ?>">
                                     <?php echo form_error('biaya_medis', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">Dokumen Penunjang</label>
                                 <div class="col-sm-6">
-                                    <input id="document_fileid" name="document_fileid" type="file" multiple=true>
+                                    <input id="document_fileid" name="document_fileid" type="file" multiple=false>
                                     <?php if(isset($data['document_fileid'])): ?>
                                     <div id="view" class="collapse">
                                         <img src="<?php echo base_url();?>upload/doc/<?= $data['document_fileid']?>" alt="Smiley face" height="100%" width="100%">
@@ -307,6 +307,9 @@ function windowClose() {
     $('#patient_dob').datepicker({dateFormat: "yy-mm-dd",});
 </script>
 <script>
+    $("#document_fileid").fileinput();
+</script>
+<script>
     $("#patient_id").select2({
         width: 'resolve', // need to override the changed default
     });
@@ -326,13 +329,14 @@ function windowClose() {
                     $("#data_pasien").show();
                     $(".clsDob").hide();
                     $(".clsAges").show();
-                    $("#anamnesis").attr('disabled', 'disabled').val(output.anamnesis);
-                    $("#patient_name").attr('disabled', 'disabled').val(output.patient_name);
-                    $("#patient_sex").attr('disabled', 'disabled').val(output.patient_sex);
-                    $("#patient_ages").attr('disabled', 'disabled').val(output.patient_ages);
-                    $("#phone_number").attr('disabled', 'disabled').val(output.phone_number);
-                    $("#mobile_number").attr('disabled', 'disabled').val(output.mobile_number);
-                    $("#address").attr('disabled', 'disabled').val(output.address);
+                    $("#anamnesis").attr('readonly', 'readonly').val(output.anamnesis);
+                    $("#patient_name").attr('readonly', 'readonly').val(output.patient_name);
+                    $("#patient_sex").attr('readonly', 'readonly').val(output.patient_sex);
+                    $("#patient_dob").val(output.patient_dob);
+                    $("#patient_ages").attr('readonly', 'readonly').val(output.patient_ages);
+                    $("#phone_number").attr('readonly', 'readonly').val(output.phone_number);
+                    $("#mobile_number").attr('readonly', 'readonly').val(output.mobile_number);
+                    $("#address").attr('readonly', 'readonly').val(output.address);
                 }
             });
         });
@@ -340,14 +344,14 @@ function windowClose() {
             $("#data_pasien").show();
             $(".clsDob").show();
             $(".clsAges").hide();
-            $("#patient_id").removeAttr("disabled").val('');
-            $("#anamnesis").removeAttr("disabled").val('');
-            $("#patient_name").removeAttr("disabled").val('');
-            $("#patient_sex").removeAttr("disabled").val('');
-            $("#patient_dob").removeAttr("disabled").val('');
-            $("#phone_number").removeAttr("disabled").val('');
-            $("#mobile_number").removeAttr("disabled").val('');
-            $("#address").removeAttr("disabled").val('');
+            $("#patient_id").removeAttr("readonly").val('');
+            $("#anamnesis").removeAttr("readonly").val('');
+            $("#patient_name").removeAttr("readonly").val('');
+            $("#patient_sex").removeAttr("readonly").val('');
+            $("#patient_dob").removeAttr("readonly").val('');
+            $("#phone_number").removeAttr("readonly").val('');
+            $("#mobile_number").removeAttr("readonly").val('');
+            $("#address").removeAttr("readonly").val('');
         });
     });
 </script>

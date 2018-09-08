@@ -35,6 +35,7 @@ class Checkup extends MY_Controller {
         $this->load->library('form_validation');
         $this->load->vars('next', 0);
         $this->load->model('Logic_transaction');
+        $this->load->model('Logic_upload');
         
         $this->load->model('Logic_doctor');
         $this->load->vars('doctor_option', $this->Logic_doctor->get_all_by_id());
@@ -46,6 +47,13 @@ class Checkup extends MY_Controller {
 
         if ($this->input->is_post()) {
             if ($this->form_validation->run('/system/checkup/new')) {
+                if($_FILES["document_fileid"]["size"]) {
+                    $upload = $this->Logic_upload->upload_image("document_fileid", "docs");
+                    if( $upload["result"] == TRUE ) {
+                        $_POST["file_path"] = $upload["datas"]["file_path"];
+                        $_POST["orig_name"] = $upload["datas"]["orig_name"];
+                    } 
+                }
                 $this->Logic_transaction->do_process_registration();
                 $this->load->vars('next', 1);
             } else {
@@ -69,6 +77,15 @@ class Checkup extends MY_Controller {
         $this->load->model('Logic_transaction');
         $checkup = $this->db->query("SELECT * FROM dtb_transaction where transaction_id = ".$this->db->escape_str($id))->row_array();
         $this->load->vars('checkup', $checkup);
+        
+        $this->load->model('Logic_patient');
+        $patient = $this->db->query("SELECT * FROM dtb_patient where patient_id = ?", $this->db->escape_str($checkup['patient_id']))->row_array();
+        $patient["disp_sex"] = $this->Logic_patient->static_sex($patient["patient_sex"]);
+        $patient["ages"] = date_diff(date_create($patient["patient_dob"]), date_create('today'))->y . " Tahun";
+        $this->load->vars('patient', $patient);
+        
+        $doctor = $this->db->query("SELECT * FROM dtb_doctor where doctor_id = ?", $this->db->escape_str($checkup['doctor_id']))->row_array();
+        $this->load->vars('doctor', $doctor);
         
         $this->load->view('system/checkup/detail.php');
     }

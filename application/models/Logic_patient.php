@@ -36,12 +36,16 @@ class Logic_patient extends CI_Model {
         return $retval;
     }
     
-    public function get_patient_by_id($pid)
+    public function get_patient_by_id($pid, $json = 1)
     {
         $models = $this->db->query("SELECT * FROM dtb_patient WHERE patient_id = ?", $pid)->row_array();
         //$models["patient_ages"] = date("Y-m-d") - $models["patient_dob"] . " Tahun";
         $models["patient_ages"] = date_diff(date_create($models["patient_dob"]), date_create('today'))->y . " Tahun";
-        return json_encode($models);
+        if( $json ) {
+            return json_encode($models);
+        } else {
+            return $models;
+        }
     }
     
     public function do_process_registration()

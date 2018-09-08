@@ -177,6 +177,7 @@
                             <div class="form-group">
                                 <label class="col-sm-5 control-label">No. Transaksi*</label>
                                 <div class="col-sm-6">
+                                    <input class="form-control" type="hidden" name="transaction_id" id="transaction_id" value="<?php echo set_value('transaction_id',''); ?>">
                                     <input class="form-control" type="text" readonly="readonly" name="transaction_no" placeholder="No. Transaksi" id="transaction_no" value="<?php echo set_value('transaction_no', $transaction_no); ?>">
                                     <?php echo form_error('transaction_no', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
@@ -203,7 +204,7 @@
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">Status Pembayaran*</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" type="text" name="payment_status" id="payment_status" <?php if($doctor_id) echo 'readonly="readonly"'; ?>>
+                                    <select class="form-control" type="text" name="payment_status" id="payment_status">
                                         <option value="" <?php echo set_select("payment_status",''); ?>>-Pilih-</option>
                                         <?php foreach( $status_option as $key => $val ) : ?>
                                         <option value="<?= $key ?>" <?php echo set_select("payment_status",$key); ?>><?= $val ?></option>
@@ -214,33 +215,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" onchange="change_total();">
                         <div class="form-horizontal">
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">Biaya Admin*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="biaya_admin" placeholder="Biaya Admin" id="biaya_admin" value="<?php echo set_value('biaya_admin', ''); ?>">
+                                    <input class="form-control" type="text" name="biaya_admin" placeholder="Biaya Admin" id="biaya_admin" value="<?php echo set_value('biaya_admin', 0); ?>">
                                     <?php echo form_error('biaya_admin', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">Biaya Periksa*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', ''); ?>">
+                                    <input class="form-control" type="text" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', 0); ?>">
                                     <?php echo form_error('biaya_medis', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">Biaya Obat*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="biaya_obat" placeholder="Biaya Obat" id="biaya_obat" value="<?php echo set_value('biaya_obat', ''); ?>">
+                                    <input class="form-control" type="text" name="biaya_obat" placeholder="Biaya Obat" id="biaya_obat" value="<?php echo set_value('biaya_obat', 0); ?>">
                                     <?php echo form_error('biaya_obat', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">Total Biaya*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="total_biaya" readonly="readonly" placeholder="Total Biaya" id="total_biaya" value="<?php echo set_value('total_biaya', ''); ?>">
+                                    <input class="form-control" type="text" name="total_biaya" readonly="readonly" placeholder="Total Biaya" id="total_biaya" value="<?php echo set_value('total_biaya', 0); ?>">
                                     <?php echo form_error('total_biaya', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
@@ -304,7 +305,7 @@ function windowClose() {
         $("#data_pasien").hide();
         $(".btnAdd").click(function(){
             var patient_id = $("#patient_id").val();
-            $.ajax({ url: "/system/checkup/ajax-get-patient",
+            $.ajax({ url: "/system/cashier/ajax-get-transaction",
                 data: {"patient_id":patient_id},
                 dataType: 'json',
                 type: 'post',
@@ -313,13 +314,19 @@ function windowClose() {
                     $("#data_pasien").show();
                     $(".clsDob").hide();
                     $(".clsAges").show();
-                    $("#anamnesis").attr('disabled', 'disabled').val(output.anamnesis);
-                    $("#patient_name").attr('disabled', 'disabled').val(output.patient_name);
-                    $("#patient_sex").attr('disabled', 'disabled').val(output.patient_sex);
-                    $("#patient_ages").attr('disabled', 'disabled').val(output.patient_ages);
-                    $("#phone_number").attr('disabled', 'disabled').val(output.phone_number);
-                    $("#mobile_number").attr('disabled', 'disabled').val(output.mobile_number);
-                    $("#address").attr('disabled', 'disabled').val(output.address);
+                    $("#anamnesis").attr('readonly', 'readonly').val(output.anamnesis);
+                    $("#patient_name").attr('readonly', 'readonly').val(output.patient_name);
+                    $("#patient_sex").attr('readonly', 'readonly').val(output.patient_sex);
+                    $("#patient_dob").attr('readonly', 'readonly').val(output.patient_dob);
+                    $("#patient_ages").attr('readonly', 'readonly').val(output.patient_ages);
+                    $("#phone_number").attr('readonly', 'readonly').val(output.phone_number);
+                    $("#mobile_number").attr('readonly', 'readonly').val(output.mobile_number);
+                    $("#address").attr('readonly', 'readonly').val(output.address);
+                    $("#transaction_id").val(output.transaction_id);
+                    $("#transaction_date").val(output.transaction_date);
+                    $("#doctor_id").val(output.doctor_id);
+                    $("#biaya_medis").val(output.biaya_medis);
+                    $("#total_biaya").val(output.biaya_medis);
                 }
             });
         });
@@ -327,14 +334,14 @@ function windowClose() {
             $("#data_pasien").show();
             $(".clsDob").show();
             $(".clsAges").hide();
-            $("#patient_id").removeAttr("disabled").val('');
-            $("#anamnesis").removeAttr("disabled").val('');
-            $("#patient_name").removeAttr("disabled").val('');
-            $("#patient_sex").removeAttr("disabled").val('');
-            $("#patient_dob").removeAttr("disabled").val('');
-            $("#phone_number").removeAttr("disabled").val('');
-            $("#mobile_number").removeAttr("disabled").val('');
-            $("#address").removeAttr("disabled").val('');
+            $("#patient_id").removeAttr("readonly").val('');
+            $("#anamnesis").removeAttr("readonly").val('');
+            $("#patient_name").removeAttr("readonly").val('');
+            $("#patient_sex").removeAttr("readonly").val('');
+            $("#patient_dob").removeAttr("readonly").val('');
+            $("#phone_number").removeAttr("readonly").val('');
+            $("#mobile_number").removeAttr("readonly").val('');
+            $("#address").removeAttr("readonly").val('');
         });
     });
 </script>
@@ -347,4 +354,14 @@ var d = new Date();
 
     $('#transaction_date').datepicker({dateFormat: "yy-mm-dd",});
     $('#transaction_date').datepicker("setDate", startDate);
+</script>
+<script>
+    function change_total(){
+        var biaya_admin = parseInt($('#biaya_admin').val());
+        var biaya_medis = parseInt($('#biaya_medis').val());
+        var biaya_obat = parseInt($('#biaya_obat').val());
+        
+        var total = parseInt(biaya_admin+biaya_medis+biaya_obat);
+        $('#total_biaya').val(total);
+    }
 </script>
