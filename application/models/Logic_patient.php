@@ -102,9 +102,8 @@ class Logic_patient extends CI_Model {
 		$model = $this->db->query("SELECT anamnesis FROM dtb_patient ORDER BY patient_id DESC LIMIT 1")->row_array();
 		$value = "NRM0001";
 		if( $model ) {
-			$value = $model["anamnesis"] + 1;
-			$sub = substr($model["anamnesis"], 1, 4); //.0000
-			$subs = $sub+'1';
+			$sub = intval(substr($model["anamnesis"], 3, 4)); //.0000
+			$subs = $sub+1;
 			if( $subs>0 && $subs<=9 ) {
 				$nmr = "000".$subs;
 			} elseif( $subs>9 && $subs<=99 ) {

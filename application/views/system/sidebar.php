@@ -33,7 +33,7 @@
                 <ul class="treeview-menu">
 				<?php   foreach($_pages[$c] as $p => $page):
 						if($type ||(array_key_exists($c, $types) && ($types[$c] & $p))): 
-                        if($category['name'] == "Report") : ?>
+                        if($category['name'] == "Laporan") : ?>
                 <li><a href="<?php echo base_url() ?><?= $page['link'] ?>" onclick="window.open('<?= base_url().$page['link']?>', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;"><i class="fa fa-angle-double-right"></i><?= $page['name'] ?></a></li>
                 <?php   else : ?>
 				<li><a href="<?php echo base_url() ?><?= $page['link'] ?>"><i class="fa fa-angle-double-right"></i><?= $page['name'] ?></a></li>

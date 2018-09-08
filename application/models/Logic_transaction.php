@@ -122,9 +122,8 @@ class Logic_transaction extends CI_Model {
 		$model = $this->db->query("SELECT transaction_no FROM dtb_transaction ORDER BY transaction_id DESC LIMIT 1")->row_array();
 		$value = "TRX0001";
 		if( $model ) {
-			$value = $model["transaction_no"] + 1;
-			$sub = substr($model["transaction_no"], 1, 4); //.0000
-			$subs = $sub+'1';
+			$sub = intval(substr($model["transaction_no"], 3, 4)); //.0000
+			$subs = $sub+1;
 			if( $subs>0 && $subs<=9 ) {
 				$nmr = "000".$subs;
 			} elseif( $subs>9 && $subs<=99 ) {
@@ -148,12 +147,16 @@ class Logic_transaction extends CI_Model {
         $models = $this->db->query("
         SELECT transaction_id, transaction_date, doctor_id, biaya_medis 
         FROM dtb_transaction 
-        WHERE patient_id = ? AND is_cashier = 0", $pid)->row_array();
+        WHERE patient_id = ? AND is_cashier = 0 ORDER BY transaction_id DESC LIMIT 1", $pid)->row_array();
         
-        foreach( $models as $key => $val) {
-            $patient[$key] = $val;
+        if( $models ) {
+            foreach( $models as $key => $val) {
+                $patient[$key] = $val;
+            }
+            
+            return json_encode($patient);
+        } else {
+            return;
         }
-        
-        return json_encode($patient);
     }
 }

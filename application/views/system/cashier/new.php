@@ -327,6 +327,9 @@ function windowClose() {
                     $("#doctor_id").val(output.doctor_id);
                     $("#biaya_medis").val(output.biaya_medis);
                     $("#total_biaya").val(output.biaya_medis);
+                },
+                error: function(xhr){
+                    alert("Data Pasien tidak dapat ditemukan atau Pasien belum dilakukan pemeriksaan");
                 }
             });
         });
