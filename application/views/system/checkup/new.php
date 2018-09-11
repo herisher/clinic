@@ -317,6 +317,11 @@ function windowClose() {
 <script>
     $(function () {
         $("#data_pasien").hide();
+        var patient_id = $("#patient_id").val();
+        if( patient_id ) {
+            $("#data_pasien").show();
+        }
+        
         $(".btnAdd").click(function(){
             console.log("btnAdd clicked");
             var patient_id = $("#patient_id").val();

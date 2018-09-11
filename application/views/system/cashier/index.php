@@ -118,6 +118,7 @@
                                     <th>Tanggal Lahir</th>
                                     <th>Total Biaya (Rp)</th>
                                     <th class="col-sm-1">Status Pembayaran</th>
+                                    <th class="col-sm-1">Edit Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -162,7 +163,8 @@
             { "orderable": true, "targets": 4, "searchable": true }, //Name
 			{ "orderable": true, "targets": 5, "searchable": true }, //DOB
 			{ "orderable": false, "targets": 6, "searchable": false }, //total
-            { "orderable": true, "targets": 7, "searchable": true } //payment status
+            { "orderable": true, "targets": 7, "searchable": true }, //payment status
+			{ "orderable": false, "targets": 8, "searchable": false }, //edit
         ],
 			"order": [[ 0, "desc" ]]
     });

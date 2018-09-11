@@ -269,6 +269,23 @@ $config = array(
             'rules' => 'required',
             ),
     ),
+    '/system/cashier/cashier_edit' => array(
+        array(
+            'field' => 'payment_status',
+            'label' => 'Status Pembayaran',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'jumlah_uang',
+            'label' => 'Jumlah Uang',
+            'rules' => 'required',
+            ),
+        array(
+            'field' => 'kembalian',
+            'label' => 'Kembalian',
+            'rules' => 'required',
+            ),
+    ),
     '/system/manage' => array(
         array(
             'field' => 'username',

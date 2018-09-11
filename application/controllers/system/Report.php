@@ -80,4 +80,84 @@ class Report extends MY_Controller {
         $this->load->vars('transaction_detail', $transaction_detail);
         $this->load->view('system/report/transaction2.php');
     }
+    
+    public function income_action()
+    {
+        $this->load->model('Logic_admin');
+        $this->Logic_admin->check_permission(1,2);
+        
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        
+        $this->load->model('Logic_doctor');
+        $this->load->vars('doctor_option', $this->Logic_doctor->get_all_by_id());
+
+        $query = "SELECT dt.*, dd.doctor_name FROM dtb_transaction dt JOIN dtb_doctor dd ON dt.doctor_id = dd.doctor_id WHERE is_cashier = 1";
+        
+        $filter = "";
+        
+        if ($this->input->is_post()) {
+            if( $this->input->post("reset") == 1 ) {
+                redirect(current_url());
+            } else {
+                if( $this->input->post("doctor_id") ){
+                    $query .= " AND dt.doctor_id = " . $this->input->post("doctor_id");
+                }
+                if( $this->input->post("transaction_date_from") && $this->input->post("transaction_date_to") ){
+                    $query .= " AND transaction_date between '" . $this->input->post("transaction_date_from") . "' AND '" . $this->input->post("transaction_date_to") . "'";
+                } elseif( $this->input->post("transaction_date_from") && !$this->input->post("transaction_date_to") ) {
+                    $query .= " AND transaction_date between '" . $this->input->post("transaction_date_from") . "' AND '" . date("Y-m-d") . "'";
+                } elseif( !$this->input->post("transaction_date_from") && $this->input->post("transaction_date_to") ) {
+                    $query .= " AND transaction_date < '" . $this->input->post("transaction_date_to") . "'";
+                }
+            }
+        }
+
+        $datas = $this->db->query($query)->result_array();
+        
+        $this->load->vars("filter", $filter);
+        $this->load->vars("datas",$datas);
+        $this->load->view("system/report/income");
+    }
+    
+    public function anamnesis_action()
+    {
+        $this->load->model('Logic_admin');
+        $this->Logic_admin->check_permission(1,2);
+        
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        
+        $this->load->model('Logic_doctor');
+        $this->load->vars('doctor_option', $this->Logic_doctor->get_all_by_id());
+
+        $this->load->model('Logic_patient');
+        $this->load->vars('patient_option', $this->Logic_patient->get_all_by_id());
+
+        $query = "SELECT dt.*, dd.doctor_name, dp.patient_name FROM dtb_transaction dt JOIN dtb_doctor dd ON dt.doctor_id = dd.doctor_id JOIN dtb_patient dp ON dt.patient_id = dp.patient_id WHERE is_cashier = 1";
+        
+        $filter = "";
+        
+        if ($this->input->is_post()) {
+            if( $this->input->post("reset") == 1 ) {
+                redirect(current_url());
+            } else {
+                if( $this->input->post("doctor_id") ){
+                    $query .= " AND dt.doctor_id = " . $this->input->post("doctor_id");
+                }
+                if( $this->input->post("patient_id") ){
+                    $query .= " AND dt.patient_id = " . $this->input->post("patient_id");
+                }
+                if( $this->input->post("diagnosa") ){
+                    $query .= " AND diagnosa LIKE '%" . $this->input->post("diagnosa") . "%'";
+                }
+            }
+        }
+
+        $datas = $this->db->query($query)->result_array();
+        
+        $this->load->vars("filter", $filter);
+        $this->load->vars("datas",$datas);
+        $this->load->view("system/report/anamnesis");
+    }
 }

@@ -59,7 +59,7 @@
                 </div>
                 <div class="box-body">
                     <ol class="breadcrumb">
-                        <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Transaksi</a></li>
+                        <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Kasir</a></li>
                         <li class="active"> New Transaksi</li>
                     </ol>
             <form name="form2" action="<?php echo base_url() ?>system/cashier/new" method="post" enctype="multipart/form-data">
@@ -172,6 +172,53 @@
                 <!-- ROW 3-->
                 <h4 style="margin-bottom: 10px;"><strong>Data Transaksi</strong></h4>
                 <div class="row">
+                    <div class="col-md-6" onchange="change_total();">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                    <label class="col-sm-5 control-label">Biaya Admin*</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="number" name="biaya_admin" placeholder="Biaya Admin" id="biaya_admin" value="<?php echo set_value('biaya_admin', 0); ?>">
+                                    <?php echo form_error('biaya_admin', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label class="col-sm-5 control-label">Biaya Periksa*</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="number" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', 0); ?>">
+                                    <?php echo form_error('biaya_medis', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label class="col-sm-5 control-label">Biaya Obat*</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="number" name="biaya_obat" placeholder="Biaya Obat" id="biaya_obat" value="<?php echo set_value('biaya_obat', 0); ?>">
+                                    <?php echo form_error('biaya_obat', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label class="col-sm-5 control-label">Total Biaya*</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="number" name="total_biaya" readonly="readonly" placeholder="Total Biaya" id="total_biaya" value="<?php echo set_value('total_biaya', 0); ?>">
+                                    <?php echo form_error('total_biaya', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label class="col-sm-5 control-label">Jumlah Uang</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="number" oninput="change_kembalian();" name="jumlah_uang" placeholder="Jumlah Uang" id="jumlah_uang" value="<?php echo set_value('jumlah_uang', 0); ?>">
+                                    <?php echo form_error('jumlah_uang', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label class="col-sm-5 control-label">Kembalian</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" type="number" name="kembalian" readonly="readonly" placeholder="Kembalian" id="kembalian" value="<?php echo set_value('kembalian', 0); ?>">
+                                    <?php echo form_error('kembalian', '<font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
                     <div class="col-md-6">
                         <div class="form-horizontal">
                             <div class="form-group">
@@ -211,38 +258,6 @@
                                         <?php endforeach;?>
                                     </select>
                                     <?php echo form_error('payment_status', '<font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6" onchange="change_total();">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Biaya Admin*</label>
-                                <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="biaya_admin" placeholder="Biaya Admin" id="biaya_admin" value="<?php echo set_value('biaya_admin', 0); ?>">
-                                    <?php echo form_error('biaya_admin', '<font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Biaya Periksa*</label>
-                                <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', 0); ?>">
-                                    <?php echo form_error('biaya_medis', '<font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Biaya Obat*</label>
-                                <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="biaya_obat" placeholder="Biaya Obat" id="biaya_obat" value="<?php echo set_value('biaya_obat', 0); ?>">
-                                    <?php echo form_error('biaya_obat', '<font color="#FF0000">', '</font>'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                    <label class="col-sm-5 control-label">Total Biaya*</label>
-                                <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="total_biaya" readonly="readonly" placeholder="Total Biaya" id="total_biaya" value="<?php echo set_value('total_biaya', 0); ?>">
-                                    <?php echo form_error('total_biaya', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                         </div>
@@ -303,6 +318,11 @@ function windowClose() {
 <script>
     $(function () {
         $("#data_pasien").hide();
+        var patient_id = $("#patient_id").val();
+        if( patient_id ) {
+            $("#data_pasien").show();
+        }
+        
         $(".btnAdd").click(function(){
             var patient_id = $("#patient_id").val();
             $.ajax({ url: "/system/cashier/ajax-get-transaction",
@@ -366,5 +386,17 @@ var d = new Date();
         
         var total = parseInt(biaya_admin+biaya_medis+biaya_obat);
         $('#total_biaya').val(total);
+    }
+    
+    function change_kembalian(){
+        var jumlah_uang = parseInt($('#jumlah_uang').val());
+        var total = parseInt($('#total_biaya').val());
+        
+        if(jumlah_uang){
+            var kembalian = parseInt(jumlah_uang - total);
+            $('#kembalian').val(kembalian);
+        } else {
+            $('#kembalian').val(0);
+        }
     }
 </script>

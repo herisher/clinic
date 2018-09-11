@@ -51,7 +51,7 @@ class Cashier extends MY_Controller {
 
         if ($this->input->is_post()) {
             if ($this->form_validation->run('/system/cashier/new')) {
-                $this->Logic_transaction->processUpdateCashier();
+                $this->Logic_transaction->processRegisterCashier();
                 $this->load->vars('next', 1);
             } else {
                 $this->load->vars('next', 0);
@@ -69,7 +69,7 @@ class Cashier extends MY_Controller {
         $this->Logic_admin->check_permission(104,1);
         
         $id = $this->uri->segment(4);
-        $this->load->vars('cashier_id', $id);
+        $this->load->vars('transaction_id', $id);
 
         $this->load->model('Logic_transaction');
         $cashier = $this->db->query("SELECT * FROM dtb_transaction where transaction_id = ".$this->db->escape_str($id))->row_array();
@@ -94,22 +94,34 @@ class Cashier extends MY_Controller {
         $this->Logic_admin->check_permission(104,1);
         
         $id = $this->uri->segment(4);
-        $this->load->vars('cashier_id', $id);
+        $this->load->vars('transaction_id', $id);
         
-        $model = $this->db->query("SELECT * from dtb_cashier where dtb_cashier.cashier_id = ? ", $id)->row_array();
+        $this->load->model('Logic_transaction');
+        $this->load->vars('status_option', $this->Logic_transaction->static_status());
+        
+        $model = $this->db->query("SELECT * from dtb_transaction where dtb_transaction.transaction_id = ? ", $id)->row_array();
         if (!$model) {
             show_error('This data is deleted or not exists.');
             exit;
         }
-        $cashier = $this->db->query("SELECT * FROM dtb_cashier where cashier_id = ".$this->db->escape_str($id))->row_array();
+        $cashier = $this->db->query("SELECT * FROM dtb_transaction where transaction_id = ".$this->db->escape_str($id))->row_array();
         $this->load->vars('cashier', $cashier);
 
+        $this->load->model('Logic_patient');
+        $patient = $this->db->query("SELECT * FROM dtb_patient where patient_id = ?", $this->db->escape_str($cashier['patient_id']))->row_array();
+        $patient["disp_sex"] = $this->Logic_patient->static_sex($patient["patient_sex"]);
+        $patient["ages"] = date_diff(date_create($patient["patient_dob"]), date_create('today'))->y . " Tahun";
+        $this->load->vars('patient', $patient);
+        
+        $doctor = $this->db->query("SELECT * FROM dtb_doctor where doctor_id = ?", $this->db->escape_str($cashier['doctor_id']))->row_array();
+        $this->load->vars('doctor', $doctor);
+        
         $this->load->helper('form');
         $this->load->library('form_validation');
         if ($this->input->is_post()) {
             if ($this->form_validation->run('/system/cashier/cashier_edit')) {
                 $this->load->model('Logic_transaction');
-                $this->Logic_transaction->processUpdate();
+                $this->Logic_transaction->processUpdateCashier();
                 $this->load->vars('next', 1);
             } else {
                 $this->load->vars('next', 0);
@@ -125,18 +137,18 @@ class Cashier extends MY_Controller {
         $this->load->model('Logic_admin');
         $this->Logic_admin->check_permission(104,1);
         
-        $this->load->vars('cashier_id', $this->uri->segment(4));
+        $this->load->vars('transaction_id', $this->uri->segment(4));
 
         //Menampilkan data sebelumnya
         $page = $this->uri->segment(4);
-        $datas = $this->db->query("SELECT * FROM dtb_cashier WHERE cashier_id = ?", $page)->row_array();
+        $datas = $this->db->query("SELECT * FROM dtb_cashier WHERE transaction_id = ?", $page)->row_array();
         
          if($this->input->post("submit") == "YES" ){
             $data = array(
                 'is_deleted'    => 1,
                 'update_date'   => date("Y-m-d H:i:s"),
             );
-            $this->db->update("dtb_cashier",$data,"cashier_id = ".$datas['cashier_id']);
+            $this->db->update("dtb_cashier",$data,"transaction_id = ".$datas['transaction_id']);
             $this->load->vars('next', 1);
         }
 
@@ -168,7 +180,7 @@ class Cashier extends MY_Controller {
             $where = "";
         }
 
-        $models = $this->db->query("SELECT cashier_id, name, phone, payment_period FROM dtb_cashier" . $where)->result_array();
+        $models = $this->db->query("SELECT transaction_id, name, phone, payment_period FROM dtb_cashier" . $where)->result_array();
 
         // ヘッダ出力
         header('Content-type: application/octet-stream');
@@ -191,7 +203,7 @@ class Cashier extends MY_Controller {
             $no++;
             
             foreach($item as $key => $i) {
-                if($key == 'cashier_id') {
+                if($key == 'transaction_id') {
                     array_push($cols, '"'.$no.'"');
                 }
                 else {

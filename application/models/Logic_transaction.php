@@ -88,7 +88,7 @@ class Logic_transaction extends CI_Model {
         $this->db->update("dtb_transaction",$datas,"transaction_id = '$id'".$this->input->get_post('transaction_id'));
     }
 
-    public function processUpdateCashier(){
+    public function processRegisterCashier(){
         $datas = array(
             'transaction_date'  => $this->input->get_post('transaction_date'),
             'transaction_no'    => $this->input->get_post('transaction_no'),
@@ -96,8 +96,20 @@ class Logic_transaction extends CI_Model {
             'biaya_medis'       => $this->input->get_post('biaya_medis'),
             'biaya_obat'        => $this->input->get_post('biaya_obat'),
             'total_biaya'       => $this->input->get_post('total_biaya'),
+            'jumlah_uang'       => $this->input->get_post('jumlah_uang'),
+            'kembalian'         => $this->input->get_post('kembalian'),
             'payment_status'    => $this->input->get_post('payment_status'),
             'is_cashier'        => 1,
+            'update_date'       => date("Y-m-d H:i:s"),
+        );
+        $this->db->update("dtb_transaction",$datas,"transaction_id = ".$this->input->get_post('transaction_id'));
+    }
+    
+    public function processUpdateCashier(){
+        $datas = array(
+            'jumlah_uang'       => $this->input->get_post('jumlah_uang'),
+            'kembalian'         => $this->input->get_post('kembalian'),
+            'payment_status'    => $this->input->get_post('payment_status'),
             'update_date'       => date("Y-m-d H:i:s"),
         );
         $this->db->update("dtb_transaction",$datas,"transaction_id = ".$this->input->get_post('transaction_id'));
@@ -119,7 +131,7 @@ class Logic_transaction extends CI_Model {
     }
 	
     public function getCodeGenerated(){
-		$model = $this->db->query("SELECT transaction_no FROM dtb_transaction ORDER BY transaction_id DESC LIMIT 1")->row_array();
+		$model = $this->db->query("SELECT transaction_no FROM dtb_transaction WHERE is_cashier = 1 ORDER BY transaction_id DESC LIMIT 1")->row_array();
 		$value = "TRX0001";
 		if( $model ) {
 			$sub = intval(substr($model["transaction_no"], 3, 4)); //.0000

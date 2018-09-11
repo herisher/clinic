@@ -268,10 +268,14 @@ class Logic_data_tables extends CI_Model{
                 }
             }
 
-            /*
+            if( $aRow['payment_status'] == 0 ) {
             //edit button
-            $row[] = "<a href=\"".base_url()."system/transaction/edit/".$aRow['transaction_id']."\" class=\"btn btn-primary btn-xs\" onclick=\"window.open('".base_url()."system/checkup/edit/".$aRow['transaction_id']."', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;\" id=\"".$aRow['transaction_id']."\" ><span class=\"glyphicon glyphicon-pencil\"></span></a>";
-            
+                $row[] = "<a href=\"".base_url()."system/cashier/edit/".$aRow['transaction_id']."\" class=\"btn btn-primary btn-xs\" onclick=\"window.open('".base_url()."system/cashier/edit/".$aRow['transaction_id']."', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;\" id=\"".$aRow['transaction_id']."\" ><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+            } else {
+                $row[]= '';
+            }
+
+            /*            
             //delete button
             $row[] = "<a href=\"".base_url()."system/checkup/delete/".$aRow['transaction_id']."\" class=\"btn btn-danger btn-xs\" onclick=\"window.open('".base_url()."system/checkup/delete/".$aRow['transaction_id']."', 'newwindow', 'width=900,height=350,left=400,top=250 ,scrollbars=yes'); return false;\" id=\"".$aRow['transaction_id']."\"><span class=\"glyphicon glyphicon-remove\"></span></a>";
             */

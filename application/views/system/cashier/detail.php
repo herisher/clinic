@@ -30,7 +30,7 @@
                     
                     <div class="box-body">
                         <ol class="breadcrumb">
-                            <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Cashier</a></li>
+                            <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Kasir</a></li>
                             <li class="active"> Detail Transaksi</li>
                         </ol>
                         <section class="content">
@@ -98,34 +98,6 @@
                                         <div class="col-md-6">
                                             <div class="form-horizontal">
                                                 <div class="form-group">
-                                                    <label class="col-sm-5 control-label">No. Transaksi</label>
-                                                    <div class="col-sm-6">
-                                                        <h5><?= $cashier['transaction_no'] ? $cashier['transaction_no'] : '-'?></h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Tanggal Periksa</label>
-                                                    <div class="col-sm-6">
-                                                        <h5><?= $cashier['transaction_date'] ? $cashier['transaction_date'] : '-'?></h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Dokter Pemeriksa</label>
-                                                    <div class="col-sm-6">
-                                                        <h5><?= $doctor['doctor_name'] ? $doctor['doctor_name'] : '-'?></h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Status Pembayaran</label>
-                                                    <div class="col-sm-6">
-                                                        <h5><?= $cashier['disp_status'] ? $cashier['disp_status'] : '-'?></h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-horizontal">
-                                                <div class="form-group">
                                                     <label class="col-sm-5 control-label">Biaya Admin (Rp)</label>
                                                     <div class="col-sm-6">
                                                         <h5> <?= $cashier['biaya_admin'] ? number_format($cashier['biaya_admin']) : '-'?> </h5>
@@ -147,6 +119,46 @@
                                                     <label class="col-sm-5 control-label">Total Biaya (Rp)</label>
                                                     <div class="col-sm-6">
                                                         <h5> <?= $cashier['total_biaya'] ? number_format($cashier['total_biaya']) : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Jumlah Uang (Rp)</label>
+                                                    <div class="col-sm-6">
+                                                        <h5> <?= $cashier['jumlah_uang'] ? number_format($cashier['jumlah_uang']) : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Kembalian (Rp)</label>
+                                                    <div class="col-sm-6">
+                                                        <h5> <?= $cashier['kembalian'] ? number_format($cashier['kembalian']) : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">No. Transaksi</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $cashier['transaction_no'] ? $cashier['transaction_no'] : '-'?></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Tanggal Periksa</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $cashier['transaction_date'] ? $cashier['transaction_date'] : '-'?></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Dokter Pemeriksa</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $doctor['doctor_name'] ? $doctor['doctor_name'] : '-'?></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Status Pembayaran</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $cashier['disp_status'] ? $cashier['disp_status'] : '-'?></h5>
                                                     </div>
                                                 </div>
                                             </div>
