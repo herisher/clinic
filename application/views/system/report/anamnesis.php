@@ -59,10 +59,10 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label" >Pasien</label>
-											<select id="doctor_id" onchange="this.form.submit()" class="form-control" type="text" name="doctor_id" value="<?php echo set_value("doctor_id",''); ?>">
-												<option value="" <?php echo set_select("doctor_id",''); ?>>-Choose-</option>
-												<?php foreach( $doctor_option as $key => $val ) : ?>
-												<option value="<?= $key ?>" <?php echo set_select("doctor_id",$key); ?>><?= $val ?></option>
+											<select id="patient_id" onchange="this.form.submit()" class="form-control" type="text" name="patient_id" value="<?php echo set_value("patient_id",''); ?>">
+												<option value="" <?php echo set_select("patient_id",''); ?>>-Choose-</option>
+												<?php foreach( $patient_option as $key => $val ) : ?>
+												<option value="<?= $key ?>" <?php echo set_select("patient_id",$key); ?>><?= $val ?></option>
 												<?php endforeach;?>
 											</select>
                                         </div>
