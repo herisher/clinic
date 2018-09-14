@@ -12,30 +12,71 @@ class Report extends MY_Controller {
         $this->load->library('form_validation');
         
         //default by year
-        $datas = $this->db->query("SELECT YEAR(transaction_date) as transaction_date, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM dtb_transaction GROUP BY YEAR(transaction_date);")->result_array();
+        $datas = $this->db->query("SELECT transaction_id, YEAR(transaction_date) as transaction_date, YEAR(transaction_date) as transaction_date_disp, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM dtb_transaction WHERE is_cashier = 1 GROUP BY YEAR(transaction_date);")->result_array();
         $filter = "";
         
         if ($this->input->is_get()) {
             if ( $this->input->get("filter_by") == "daily" ) {
-                $datas = $this->db->query("SELECT transaction_date as transaction_date, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM `dtb_transaction` GROUP BY transaction_date")->result_array();
+                $datas = $this->db->query("SELECT transaction_id, transaction_date as transaction_date_disp, transaction_date as transaction_date, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM `dtb_transaction` WHERE is_cashier = 1 GROUP BY transaction_date")->result_array();
             } elseif ( $this->input->get("filter_by") == "weekly" ) {
-                $datas = $this->db->query("SELECT YEARWEEK(transaction_date) as transaction_date, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM `dtb_transaction` GROUP BY YEARWEEK(transaction_date);")->result_array();
+                $datas = $this->db->query("SELECT transaction_id, YEARWEEK(transaction_date) as transaction_date, YEARWEEK(transaction_date) as transaction_date_disp, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM `dtb_transaction` WHERE is_cashier = 1 GROUP BY YEARWEEK(transaction_date);")->result_array();
                 
                 foreach($datas as &$data){
-                    $date1 = date( "Y-m-d", strtotime(substr($data["transaction_date"],0,4)."W".substr($data["transaction_date"],4,2)."0") );
-                    $date2 = date( "Y-m-d", strtotime(substr($data["transaction_date"],0,4)."W".substr($data["transaction_date"],4,2)."6") );
-                    $data["transaction_date"] = $date1 . ' ~ ' . $date2;
+                    $date1 = date( "Y-m-d", strtotime(substr($data["transaction_date_disp"],0,4)."W".substr($data["transaction_date_disp"],4,2)."0") );
+                    $date2 = date( "Y-m-d", strtotime(substr($data["transaction_date_disp"],0,4)."W".substr($data["transaction_date_disp"],4,2)."6") );
+                    $data["transaction_date_disp"] = $date1 . ' ~ ' . $date2;
                 }
             } elseif ( $this->input->get("filter_by") == "monthly" ) {
-                $datas = $this->db->query("SELECT CONCAT(YEAR(transaction_date),'-',MONTH(transaction_date)) as transaction_date, COUNT( patient_id ) as qty, SUM( total_biaya ) as total_idr FROM dtb_transaction GROUP BY YEAR(transaction_date),MONTH(transaction_date);")->result_array();
+                $datas = $this->db->query("SELECT transaction_id, CONCAT(YEAR(transaction_date),'-',MONTH(transaction_date)) as transaction_date_disp, CONCAT(YEAR(transaction_date),'-',MONTH(transaction_date)) as transaction_date, COUNT( patient_id ) as qty, SUM( total_biaya ) as total_idr FROM dtb_transaction WHERE is_cashier = 1 GROUP BY YEAR(transaction_date),MONTH(transaction_date);")->result_array();
             } elseif ( $this->input->get("filter_by") == "yearly" ) {
-                $datas = $this->db->query("SELECT YEAR(transaction_date) as transaction_date, COUNT( patient_id ) as qty, SUM( total_biaya ) as total_idr FROM dtb_transaction GROUP BY YEAR(transaction_date);")->result_array();
+                $datas = $this->db->query("SELECT transaction_id, YEAR(transaction_date) as transaction_date_disp, YEAR(transaction_date) as transaction_date, COUNT( patient_id ) as qty, SUM( total_biaya ) as total_idr FROM dtb_transaction WHERE is_cashier = 1 GROUP BY YEAR(transaction_date);")->result_array();
             }
             
             if( $this->input->get("filter_by") != null) {
                 $filter = ucfirst($this->input->get("filter_by"));
             } else {
                 $filter = "Yearly";
+            }
+            
+            if( $this->input->get("csv") == 1 ) {
+                ini_set('memory_limit','-1');
+                
+                header('Content-type: application/octet-stream');
+                if (preg_match("/MSIE 8\.0/", $_SERVER['HTTP_USER_AGENT'])) {
+                    header('Content-Disposition: filename=transaction-' . time() . '.csv');
+                } else {
+                    header('Content-Disposition: attachment; filename=transaction-' . time() . '.csv');
+                }
+                header('Pragma: public');
+                header('Cache-control: public');
+
+                echo '"No","Tanggal Periksa","Jumlah Pasien","Total (Rp)"'."\n";
+                $col = array("transaction_id", "transaction_date", "qty", "total_idr");
+
+                $no = 0;
+                $total = 0;
+                foreach ($datas as $item => $val ) {
+                    $cols = array();
+                    $no++;
+                    
+                    foreach( $col as $col_name ) {
+                        if( $val[$col_name] ) {
+                            if($col_name == 'transaction_id') {
+                                array_push($cols, '"'.$no.'"');
+                            }
+                            elseif($col_name == 'total_idr' || $col_name == 'qty') {
+                                array_push($cols, '"'.number_format($val[$col_name],0,',','.').'"');
+                            }
+                            else {
+                                array_push($cols, '"'.$val[$col_name].'"');
+                            }
+                        }
+                    }
+                    $total += $val["total_idr"];
+                    echo mb_convert_encoding(join(",", $cols), 'SJIS-win', 'UTF-8') . "\r\n";
+                }
+                echo '"","","Total (Rp)","' . number_format($total,0,',','.') . '"'."\n";
+                exit;
             }
         }
         
@@ -49,33 +90,82 @@ class Report extends MY_Controller {
 		$this->load->model('Logic_admin');
 		$this->Logic_admin->check_permission(1,1);
 		
-        $filter = $this->uri->segment(4) . '   ' . $this->uri->segment(5);
         $type = strtolower($this->uri->segment(4));
         $transaction_date = $this->uri->segment(5);
         $this->load->vars('transaction_date', $transaction_date);
 
 		if( $type == "daily" ){
-			$transaction_detail = $this->db->query("SELECT transaction_no, transaction_date, total_biaya, 
+			$transaction_detail = $this->db->query("SELECT transaction_id, transaction_no, transaction_date, total_biaya, 
             CASE WHEN payment_status = 0 THEN 'Belum Dibayar' 
             WHEN payment_status = 1 THEN 'Lunas' END AS 'disp_status' 
-            FROM dtb_transaction where transaction_date = ?", $transaction_date)->result_array();
+            FROM dtb_transaction WHERE is_cashier = 1 AND transaction_date = ?", $transaction_date)->result_array();
 		} elseif( $type == "weekly" ) {
-			$transaction_detail = $this->db->query("SELECT transaction_no, transaction_date, total_biaya, 
+			$transaction_detail = $this->db->query("SELECT transaction_id, transaction_no, transaction_date, total_biaya, 
             CASE WHEN payment_status = 0 THEN 'Belum Dibayar' 
             WHEN payment_status = 1 THEN 'Lunas' END AS 'disp_status' 
-            FROM dtb_transaction sd where YEARWEEK(transaction_date) = ?", $transaction_date)->result_array();
+            FROM dtb_transaction sd where is_cashier = 1 AND YEARWEEK(transaction_date) = ?", $transaction_date)->result_array();
+            $date1 = date( "Y-m-d", strtotime(substr($transaction_date,0,4)."W".substr($transaction_date,4,2)."0") );
+            $date2 = date( "Y-m-d", strtotime(substr($transaction_date,0,4)."W".substr($transaction_date,4,2)."6") );
+            $transaction_date = $date1 . ' ~ ' . $date2;
 		} elseif( $type == "monthly" ) {
-			$transaction_detail = $this->db->query("SELECT transaction_no, transaction_date, total_biaya, 
+			$transaction_detail = $this->db->query("SELECT transaction_id, transaction_no, transaction_date, total_biaya, 
             CASE WHEN payment_status = 0 THEN 'Belum Dibayar' 
             WHEN payment_status = 1 THEN 'Lunas' END AS 'disp_status' 
-            FROM dtb_transaction sd where CONCAT(YEAR(transaction_date),'-',MONTH(transaction_date)) = ?", $transaction_date)->result_array();
+            FROM dtb_transaction sd where is_cashier = 1 AND CONCAT(YEAR(transaction_date),'-',MONTH(transaction_date)) = ?", $transaction_date)->result_array();
 		} elseif( $type == "yearly" ) {
-			$transaction_detail = $this->db->query("SELECT transaction_no, transaction_date, total_biaya, 
+			$transaction_detail = $this->db->query("SELECT transaction_id, transaction_no, transaction_date, total_biaya, 
             CASE WHEN payment_status = 0 THEN 'Belum Dibayar' 
             WHEN payment_status = 1 THEN 'Lunas' END AS 'disp_status' 
-            FROM dtb_transaction sd where YEAR(transaction_date) = ?", $transaction_date)->result_array();
+            FROM dtb_transaction sd where is_cashier = 1 AND YEAR(transaction_date) = ?", $transaction_date)->result_array();
 		}
 		
+        if ($this->input->is_post()) {
+            if( $this->input->post("csv") == 1 ) {
+                ini_set('memory_limit','-1');
+                
+                header('Content-type: application/octet-stream');
+                if (preg_match("/MSIE 8\.0/", $_SERVER['HTTP_USER_AGENT'])) {
+                    header('Content-Disposition: filename=transaction-' . time() . '.csv');
+                } else {
+                    header('Content-Disposition: attachment; filename=transaction-' . time() . '.csv');
+                }
+                header('Pragma: public');
+                header('Cache-control: public');
+
+                echo '"No","No. Transaksi","Tanggal Periksa","Status Pembayaran","Total (Rp)"'."\n";
+                $col = array("transaction_id", "transaction_no", "transaction_date", "disp_status", "total_biaya");
+
+                $no = 0;
+                $total = 0;
+                foreach ($transaction_detail as $item => $val ) {
+                    $cols = array();
+                    $no++;
+                    
+                    foreach( $col as $col_name ) {
+                        if( $val[$col_name] ) {
+                            if($col_name == 'transaction_id') {
+                                array_push($cols, '"'.$no.'"');
+                            }
+                            elseif($col_name == 'total_biaya') {
+                                array_push($cols, '"'.number_format($val[$col_name],0,',','.').'"');
+                            }
+                            else {
+                                array_push($cols, '"'.$val[$col_name].'"');
+                            }
+                        }
+                    }
+                    $total += $val["total_biaya"];
+                    echo mb_convert_encoding(join(",", $cols), 'SJIS-win', 'UTF-8') . "\r\n";
+                }
+                echo '"","","","Total (Rp)","' . number_format($total,0,',','.') . '"'."\n";
+                exit;
+            }
+        }
+        
+        $filter = $this->uri->segment(4) . '   ' . $transaction_date;
+        
+		$this->load->vars("type", $type);
+		$this->load->vars("transaction_date", $this->uri->segment(5));
 		$this->load->vars("filter", $filter);
         $this->load->vars('transaction_detail', $transaction_detail);
         $this->load->view('system/report/transaction2.php');
@@ -110,6 +200,48 @@ class Report extends MY_Controller {
                 } elseif( !$this->input->post("transaction_date_from") && $this->input->post("transaction_date_to") ) {
                     $query .= " AND transaction_date < '" . $this->input->post("transaction_date_to") . "'";
                 }
+            }
+            
+            if( $this->input->post("csv") == 1 ) {
+                ini_set('memory_limit','-1');
+                
+                header('Content-type: application/octet-stream');
+                if (preg_match("/MSIE 8\.0/", $_SERVER['HTTP_USER_AGENT'])) {
+                    header('Content-Disposition: filename=income-' . time() . '.csv');
+                } else {
+                    header('Content-Disposition: attachment; filename=income-' . time() . '.csv');
+                }
+                header('Pragma: public');
+                header('Cache-control: public');
+
+                echo '"No","Tanggal Periksa","Nama Dokter","Total (Rp)"'."\n";
+                $col = array("transaction_id", "transaction_date", "doctor_name", "biaya_medis");
+
+                $models = $this->db->query($query)->result_array();
+        
+                $no = 0;
+                $total = 0;
+                foreach ($models as $item => $val ) {
+                    $cols = array();
+                    $no++;
+                    
+                    foreach( $col as $col_name ) {
+                        if( $val[$col_name] ) {
+                            if($col_name == 'transaction_id') {
+                                array_push($cols, '"'.$no.'"');
+                            }
+                            elseif($col_name == 'biaya_medis') {
+                                array_push($cols, '"'.number_format($val[$col_name],0,',','.').'"');
+                            }
+                            else {
+                                array_push($cols, '"'.$val[$col_name].'"');
+                            }
+                        }
+                    }
+                    $total += $val["biaya_medis"];
+                    echo mb_convert_encoding(join(",", $cols), 'SJIS-win', 'UTF-8') . "\r\n";
+                }
+                echo '"","","Total (Rp)","' . number_format($total,0,',','.') . '"'."\n";
             }
         }
 
@@ -151,6 +283,44 @@ class Report extends MY_Controller {
                 if( $this->input->post("diagnosa") ){
                     $query .= " AND diagnosa LIKE '%" . $this->input->post("diagnosa") . "%'";
                 }
+            }
+            
+            if( $this->input->post("csv") == 1 ) {
+                ini_set('memory_limit','-1');
+                
+                header('Content-type: application/octet-stream');
+                if (preg_match("/MSIE 8\.0/", $_SERVER['HTTP_USER_AGENT'])) {
+                    header('Content-Disposition: filename=anamnesis-' . time() . '.csv');
+                } else {
+                    header('Content-Disposition: attachment; filename=anamnesis-' . time() . '.csv');
+                }
+                header('Pragma: public');
+                header('Cache-control: public');
+
+                echo '"No","Nama Pasien","Nama Dokter","Diagnosa"'."\n";
+                $col = array("transaction_id", "patient_name", "doctor_name", "diagnosa");
+
+                $models = $this->db->query($query)->result_array();
+        
+                $no = 0;
+                foreach ($models as $item => $val ) {
+                    $cols = array();
+                    $no++;
+                    
+                    foreach( $col as $col_name ) {
+                        if( $val[$col_name] ) {
+                            if($col_name == 'transaction_id') {
+                                array_push($cols, '"'.$no.'"');
+                            }
+                            else {
+                                array_push($cols, '"'.$val[$col_name].'"');
+                            }
+                        }
+                    }
+                    
+                    echo mb_convert_encoding(join(",", $cols), 'SJIS-win', 'UTF-8') . "\r\n";
+                }
+                exit;
             }
         }
 

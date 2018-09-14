@@ -51,9 +51,13 @@
                             <li class="active"> Laporan Transaksi Detail</li>
                         </ol>
 						
+						<form action="/system/report/transactiondetail/<?= $type; ?>/<?= $transaction_date; ?>" id="form2" method="POST" class="noPrint">
                         <p class="noPrint">
-                            <button type="button" value="print" onclick="javascript:window.print();" class="btn btn-primary" target="_blank" ><i class="fa fa-print"></i> &nbsp Print</button>
+                            <!--button type="button" value="print" onclick="javascript:window.print();" class="btn btn-primary" target="_blank" ><i class="fa fa-print"></i> &nbsp Print</button-->
+                            <input class="form-control" type="hidden" name="csv" id="csv" value="0" >
+                            <button type="button" value="print" name="csvBut" id="csvBut" class="btn btn-primary" ><i class="fa fa-file"></i> &nbsp; Export to CSV</button>
                         </p>
+                        </form>
 						
                         <section class="content">
                             <div class="container-form">
@@ -130,5 +134,11 @@
             "filter": false,
             "info":     false
 		});
+    });
+    
+    $("#csvBut").on("click", function(e){
+        e.preventDefault();
+        $('#csv').val(1);
+        $('#form2').submit();
     });
 </script>

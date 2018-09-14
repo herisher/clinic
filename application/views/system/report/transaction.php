@@ -50,7 +50,7 @@
                             <li class="active"><i class="fa fa-angle-double-right ">&nbsp;</i><a href="" onclick="javascript:self.close();"> Laporan</a></li>
                             <li class="active"> Laporan Transaksi</li>
                         </ol>
-						<form action="/system/report/transaction" method="GET" class="noPrint">
+						<form id="form2" action="/system/report/transaction" method="GET" class="noPrint">
                         <div id="advance-search">
                             <div class="well">
                                 <!--ROW 1-->
@@ -58,7 +58,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label" >Filter</label>
-											<select id="filter_by" onchange="this.form.submit()" class="form-control" type="text" name="filter_by" value="<?php echo set_value("filter_by",''); ?>">
+											<select id="filter_by" class="form-control" type="text" name="filter_by" value="<?php echo set_value("filter_by",''); ?>">
 												<option value="" <?php echo set_select("filter_by",''); ?>>-Choose-</option>
 												<option value="daily" <?php echo set_select("filter_by", "daily"); ?>>Daily</option>
 												<option value="weekly" <?php echo set_select("filter_by", "weekly"); ?>>Weekly</option>
@@ -71,7 +71,9 @@
                             </div>
                         </div>
                         <p>
-                            <button type="button" value="print" onclick="javascript:window.print();" class="btn btn-primary" target="_blank" ><i class="fa fa-print"></i> &nbsp; Print</button>
+                            <!--button type="button" value="print" onclick="javascript:window.print();" class="btn btn-primary" target="_blank" ><i class="fa fa-print"></i> &nbsp; Print</button-->
+                            <input class="form-control" type="hidden" name="csv" id="csv" value="0" >
+                            <button type="button" value="print" name="csvBut" id="csvBut" class="btn btn-primary" ><i class="fa fa-file"></i> &nbsp; Export to CSV</button>
                         </p>
 						</form>
                         <br>
@@ -115,7 +117,7 @@
 										$idr_total = 0;
 										foreach($datas as $data) : ?>
 									<tr>
-										<td><?= $data["transaction_date"]; ?></td>
+										<td><?= $data["transaction_date_disp"]; ?></td>
 										<td style='text-align:right'><?= number_format($data["qty"]); ?></td>
 										<td style='text-align:right'><?= number_format($data["total_idr"]); ?></td>
 										<td class="noPrint"><button type="button" onclick="location.href = '/system/report/transactiondetail/<?= $filter . "/" . $data["transaction_date"];?>';" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
@@ -145,3 +147,17 @@
             </div>
         </div>
     </section>
+    
+<script>
+$("#filter_by").on("change", function(e){
+    e.preventDefault();
+    $('#csv').val(0);
+    $('#form2').submit();
+});
+$("#csvBut").on("click", function(e){
+    e.preventDefault();
+    $('#csv').val(1);
+    $('#filter_by').val('<?= strtolower($filter);?>');
+    $('#form2').submit();
+});
+</script>

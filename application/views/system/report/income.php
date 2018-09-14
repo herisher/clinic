@@ -91,7 +91,9 @@
                             </div>
                         </div>
                         <p>
-                            <button type="button" value="print" onclick="javascript:window.print();" class="btn btn-primary" target="_blank" ><i class="fa fa-print"></i> &nbsp; Print</button>
+                            <!--button type="button" value="print" onclick="javascript:window.print();" class="btn btn-primary" target="_blank" ><i class="fa fa-print"></i> &nbsp; Print</button-->
+                            <input class="form-control" type="hidden" name="csv" id="csv" value="0" >
+                            <button type="button" value="print" name="csvBut" id="csvBut" class="btn btn-primary" ><i class="fa fa-file"></i> &nbsp; Export to CSV</button>
                         </p>
 						</form>
                         <br>
@@ -178,6 +180,12 @@
     $("#resetBut").on("click", function(e){
         e.preventDefault();
         $('#reset').val(1);
+        $('#form2').submit();
+    });
+    
+    $("#csvBut").on("click", function(e){
+        e.preventDefault();
+        $('#csv').val(1);
         $('#form2').submit();
     });
 </script>
