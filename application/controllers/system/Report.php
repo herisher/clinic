@@ -19,11 +19,16 @@ class Report extends MY_Controller {
             if ( $this->input->get("filter_by") == "daily" ) {
                 $datas = $this->db->query("SELECT transaction_id, transaction_date as transaction_date_disp, transaction_date as transaction_date, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM `dtb_transaction` WHERE is_cashier = 1 GROUP BY transaction_date")->result_array();
             } elseif ( $this->input->get("filter_by") == "weekly" ) {
-                $datas = $this->db->query("SELECT transaction_id, YEARWEEK(transaction_date) as transaction_date, YEARWEEK(transaction_date) as transaction_date_disp, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM `dtb_transaction` WHERE is_cashier = 1 GROUP BY YEARWEEK(transaction_date);")->result_array();
+                $datas = $this->db->query("SELECT transaction_id, YEARWEEK(transaction_date)+1 as transaction_date, YEARWEEK(transaction_date)+1 as transaction_date_disp, COUNT(patient_id) as qty, SUM( total_biaya ) as total_idr FROM `dtb_transaction` WHERE is_cashier = 1 GROUP BY YEARWEEK(transaction_date)+1;")->result_array();
                 
                 foreach($datas as &$data){
-                    $date1 = date( "Y-m-d", strtotime(substr($data["transaction_date_disp"],0,4)."W".substr($data["transaction_date_disp"],4,2)."0") );
-                    $date2 = date( "Y-m-d", strtotime(substr($data["transaction_date_disp"],0,4)."W".substr($data["transaction_date_disp"],4,2)."6") );
+                    $year = substr($data['transaction_date'],0,4);
+                    $week = substr($data['transaction_date'],4,2);
+                    $dto = new DateTime();
+                    $dto->setISODate($year, $week);
+                    $date1 = $dto->format('Y-m-d');
+                    $dto->modify('+6 days');
+                    $date2 = $dto->format('Y-m-d');
                     $data["transaction_date_disp"] = $date1 . ' ~ ' . $date2;
                 }
             } elseif ( $this->input->get("filter_by") == "monthly" ) {
@@ -103,9 +108,15 @@ class Report extends MY_Controller {
 			$transaction_detail = $this->db->query("SELECT transaction_id, transaction_no, transaction_date, total_biaya, 
             CASE WHEN payment_status = 0 THEN 'Belum Dibayar' 
             WHEN payment_status = 1 THEN 'Lunas' END AS 'disp_status' 
-            FROM dtb_transaction sd where is_cashier = 1 AND YEARWEEK(transaction_date) = ?", $transaction_date)->result_array();
-            $date1 = date( "Y-m-d", strtotime(substr($transaction_date,0,4)."W".substr($transaction_date,4,2)."0") );
-            $date2 = date( "Y-m-d", strtotime(substr($transaction_date,0,4)."W".substr($transaction_date,4,2)."6") );
+            FROM dtb_transaction sd where is_cashier = 1 AND YEARWEEK(transaction_date)+1 = ?", $transaction_date)->result_array();
+            $year = substr($transaction_date,0,4);
+            $week = substr($transaction_date,4,2);
+            $dto = new DateTime();
+            $dto->setISODate($year, $week);
+            $date1 = $dto->format('Y-m-d');
+            $dto->modify('+6 days');
+            $date2 = $dto->format('Y-m-d');
+            $data["transaction_date_disp"] = $date1 . ' ~ ' . $date2;
             $transaction_date = $date1 . ' ~ ' . $date2;
 		} elseif( $type == "monthly" ) {
 			$transaction_detail = $this->db->query("SELECT transaction_id, transaction_no, transaction_date, total_biaya, 
@@ -211,7 +222,7 @@ class Report extends MY_Controller {
                 } else {
                     header('Content-Disposition: attachment; filename=income-' . time() . '.csv');
                 }
-                header('Pragma: public');
+                header('Pragma: no-cache');
                 header('Cache-control: public');
 
                 echo '"No","Tanggal Periksa","Nama Dokter","Total (Rp)"'."\n";
@@ -242,6 +253,7 @@ class Report extends MY_Controller {
                     echo mb_convert_encoding(join(",", $cols), 'SJIS-win', 'UTF-8') . "\r\n";
                 }
                 echo '"","","Total (Rp)","' . number_format($total,0,',','.') . '"'."\n";
+                exit;
             }
         }
 

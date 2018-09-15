@@ -59,19 +59,19 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label" >Tanggal Periksa (Awal)</label>
-                                            <input class="form-control" onchange="this.form.submit()" type="text" name="transaction_date_from" placeholder="Tanggal Periksa Awal" id="transaction_date_from" value="<?php echo set_value('transaction_date_from', ''); ?>" >
+                                            <input class="form-control" type="text" name="transaction_date_from" placeholder="Tanggal Periksa Awal" id="transaction_date_from" value="<?php echo set_value('transaction_date_from', ''); ?>" >
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label" >Tanggal Periksa (Akhir)</label>
-                                            <input class="form-control" onchange="this.form.submit()" type="text" name="transaction_date_to" placeholder="Tanggal Periksa Akhir " id="transaction_date_to" value="<?php echo set_value('transaction_date_to', ''); ?>" >
+                                            <input class="form-control" type="text" name="transaction_date_to" placeholder="Tanggal Periksa Akhir " id="transaction_date_to" value="<?php echo set_value('transaction_date_to', ''); ?>" >
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label" >Dokter</label>
-											<select id="doctor_id" onchange="this.form.submit()" class="form-control" type="text" name="doctor_id" value="<?php echo set_value("doctor_id",''); ?>">
+											<select id="doctor_id" class="form-control" type="text" name="doctor_id" value="<?php echo set_value("doctor_id",''); ?>">
 												<option value="" <?php echo set_select("doctor_id",''); ?>>-Choose-</option>
 												<?php foreach( $doctor_option as $key => $val ) : ?>
 												<option value="<?= $key ?>" <?php echo set_select("doctor_id",$key); ?>><?= $val ?></option>
@@ -183,6 +183,22 @@
         $('#form2').submit();
     });
     
+    $('#csv').val(0);
+    $("#transaction_date_from").on("change", function(e){
+        e.preventDefault();
+        $('#csv').val(0);
+        $('#form2').submit();
+    });
+    $("#transaction_date_to").on("change", function(e){
+        e.preventDefault();
+        $('#csv').val(0);
+        $('#form2').submit();
+    });
+    $("#doctor_id").on("change", function(e){
+        e.preventDefault();
+        $('#csv').val(0);
+        $('#form2').submit();
+    });
     $("#csvBut").on("click", function(e){
         e.preventDefault();
         $('#csv').val(1);

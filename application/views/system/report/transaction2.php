@@ -136,6 +136,7 @@
 		});
     });
     
+    $('#csv').val(0);
     $("#csvBut").on("click", function(e){
         e.preventDefault();
         $('#csv').val(1);

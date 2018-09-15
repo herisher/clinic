@@ -59,7 +59,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label" >Pasien</label>
-											<select id="patient_id" onchange="this.form.submit()" class="form-control" type="text" name="patient_id" value="<?php echo set_value("patient_id",''); ?>">
+											<select id="patient_id" class="form-control" type="text" name="patient_id" value="<?php echo set_value("patient_id",''); ?>">
 												<option value="" <?php echo set_select("patient_id",''); ?>>-Choose-</option>
 												<?php foreach( $patient_option as $key => $val ) : ?>
 												<option value="<?= $key ?>" <?php echo set_select("patient_id",$key); ?>><?= $val ?></option>
@@ -70,7 +70,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label" >Dokter</label>
-											<select id="doctor_id" onchange="this.form.submit()" class="form-control" type="text" name="doctor_id" value="<?php echo set_value("doctor_id",''); ?>">
+											<select id="doctor_id" class="form-control" type="text" name="doctor_id" value="<?php echo set_value("doctor_id",''); ?>">
 												<option value="" <?php echo set_select("doctor_id",''); ?>>-Choose-</option>
 												<?php foreach( $doctor_option as $key => $val ) : ?>
 												<option value="<?= $key ?>" <?php echo set_select("doctor_id",$key); ?>><?= $val ?></option>
@@ -81,7 +81,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label" >Diagnosa</label>
-											<input class="form-control" onchange="this.form.submit()" type="text" name="diagnosa" placeholder="Diagnosa" id="diagnosa" value="<?php echo set_value('diagnosa', ''); ?>" >
+											<input class="form-control" type="text" name="diagnosa" placeholder="Diagnosa" id="diagnosa" value="<?php echo set_value('diagnosa', ''); ?>" >
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -181,6 +181,21 @@
         $('#form2').submit();
     });
     
+    $("#patient_id").on("change", function(e){
+        e.preventDefault();
+        $('#csv').val(0);
+        $('#form2').submit();
+    });
+    $("#doctor_id").on("change", function(e){
+        e.preventDefault();
+        $('#csv').val(0);
+        $('#form2').submit();
+    });
+    $("#diagnosa").on("change", function(e){
+        e.preventDefault();
+        $('#csv').val(0);
+        $('#form2').submit();
+    });
     $("#csvBut").on("click", function(e){
         e.preventDefault();
         $('#csv').val(1);
