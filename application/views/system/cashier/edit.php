@@ -23,8 +23,9 @@
     <script src="<?php echo base_url() ?>jquery.select-to-autocomplete.js"></script>
 
     <script src="<?php echo base_url() ?>dist/jquery.validate.js"></script>
-    <script src="<?php echo base_url() ?>js/jquery.maskedinput.js" type="text/javascript"></script>
+    <script src="<?php echo base_url() ?>js/jquery.format.price/jquery.format.price.js" type="text/javascript"></script>
 
+    <script src="<?php echo base_url() ?>js/jquery.maskedinput.js" type="text/javascript"></script>
     
     <script src="<?php echo base_url() ?>js/fileinput.js" type="text/javascript"></script>
 </head>
@@ -145,16 +146,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label class="col-sm-5 control-label">Jumlah Uang</label>
+                                                        <label class="col-sm-5 control-label">Jumlah Uang (Rp)</label>
                                                     <div class="col-sm-6">
-                                                        <input class="form-control" type="number" oninput="change_kembalian();" name="jumlah_uang" placeholder="Jumlah Uang" id="jumlah_uang" value="<?php echo set_value('jumlah_uang', $cashier['jumlah_uang']); ?>">
+                                                        <input class="form-control" type="text" oninput="change_kembalian();" name="jumlah_uang" placeholder="Jumlah Uang" id="jumlah_uang" value="<?php echo set_value('jumlah_uang', $cashier['jumlah_uang']); ?>">
                                                         <?php echo form_error('jumlah_uang', '<font color="#FF0000">', '</font>'); ?>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label class="col-sm-5 control-label">Kembalian</label>
+                                                        <label class="col-sm-5 control-label">Kembalian (Rp)</label>
                                                     <div class="col-sm-6">
-                                                        <input class="form-control" type="number" name="kembalian" readonly="readonly" placeholder="Kembalian" id="kembalian" value="<?php echo set_value('kembalian', $cashier['kembalian']); ?>">
+                                                        <input class="form-control" type="text" name="kembalian" readonly="readonly" placeholder="Kembalian" id="kembalian" value="<?php echo set_value('kembalian', $cashier['kembalian']); ?>">
                                                         <input class="form-control" type="hidden" name="total_biaya" readonly="readonly" id="total_biaya" value="<?php echo set_value('total_biaya', $cashier['total_biaya']); ?>">
                                                         <?php echo form_error('kembalian', '<font color="#FF0000">', '</font>'); ?>
                                                     </div>
@@ -214,8 +215,8 @@
 </section>
 <script>
     function change_kembalian(){
-        var jumlah_uang = parseInt($('#jumlah_uang').val());
-        var total = parseInt($('#total_biaya').val());
+        var jumlah_uang = parseInt($('#jumlah_uang').val().replace('.',''));
+        var total = parseInt($('#total_biaya').val().replace('.',''));
         
         if(jumlah_uang){
             var kembalian = parseInt(jumlah_uang - total);
@@ -224,4 +225,14 @@
             $('#kembalian').val(0);
         }
     }
+    
+    $("#jumlah_uang, #kembalian").priceFormat({
+        prefix: '',
+        clearPrefix: false,
+        thousandsSeparator: '.',
+        centsSeparator: ',',
+        centsLimit: 0,
+        clearOnEmpty: false,
+        allowNegative: true,
+    });
 </script>

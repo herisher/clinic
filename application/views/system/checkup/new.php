@@ -27,6 +27,7 @@
     <script src="<?php echo base_url() ?>jquery.select-to-autocomplete.js"></script>
 
     <script src="<?php echo base_url() ?>dist/jquery.validate.js"></script>
+    <script src="<?php echo base_url() ?>js/jquery.format.price/jquery.format.price.js" type="text/javascript"></script>
 
     <script src="<?php echo base_url() ?>js/fileinput.js" type="text/javascript"></script>
     <script src="<?php echo base_url() ?>js/select2.min.js" type="text/javascript"></script>
@@ -89,6 +90,7 @@
                                         <option value="<?= $key ?>" <?php echo set_select("patient_id",$key); ?>><?= $val ?></option>
                                         <?php endforeach;?>
                                     </select>
+                                    <?php echo form_error('patient_name', '<br><font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-default btnAdd">Pilih</button>&nbsp;&nbsp;&nbsp;atau&nbsp;&nbsp;&nbsp;
@@ -242,7 +244,7 @@
                             <div class="form-group">
                                     <label class="col-sm-5 control-label">Biaya Periksa*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="number" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', ''); ?>">
+                                    <input class="form-control" type="text" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', ''); ?>">
                                     <?php echo form_error('biaya_medis', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
@@ -320,6 +322,15 @@ function windowClose() {
         var patient_id = $("#patient_id").val();
         if( patient_id ) {
             $("#data_pasien").show();
+            $(".clsDob").hide();
+            $(".clsAges").show();
+            $("#anamnesis").attr('readonly', 'readonly');
+            $("#patient_name").attr('readonly', 'readonly');
+            $("#patient_sex").attr('readonly', 'readonly');
+            $("#patient_ages").attr('readonly', 'readonly');
+            $("#phone_number").attr('readonly', 'readonly');
+            $("#mobile_number").attr('readonly', 'readonly');
+            $("#address").attr('readonly', 'readonly');
         }
         
         $(".btnAdd").click(function(){
@@ -369,4 +380,14 @@ var d = new Date();
 
     $('#transaction_date').datepicker({dateFormat: "yy-mm-dd",});
     $('#transaction_date').datepicker("setDate", startDate);
+</script>
+<script>
+    $("#biaya_medis").priceFormat({
+        prefix: '',
+        clearPrefix: false,
+        thousandsSeparator: '.',
+        centsSeparator: ',',
+        centsLimit: 0,
+        clearOnEmpty: false,
+    });
 </script>

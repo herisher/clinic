@@ -68,7 +68,8 @@ class Logic_transaction extends CI_Model {
             'layanan_tambahan'  => $this->input->get_post('layanan_tambahan'),
             'keterangan'        => $this->input->get_post('keterangan'),
             'alergi_obat'       => $this->input->get_post('alergi_obat'),
-            'biaya_medis'       => $this->input->get_post('biaya_medis'),
+            'biaya_medis'       => str_replace(".", "", $this->input->get_post('biaya_medis')),
+            'total_biaya'       => str_replace(".", "", $this->input->get_post('biaya_medis')),
             'document_fileid'    => $this->input->get_post('orig_name'),
             'create_date'       => date("Y-m-d H:i:s"),
             'update_date'       => date("Y-m-d H:i:s"),
@@ -92,12 +93,12 @@ class Logic_transaction extends CI_Model {
         $datas = array(
             'transaction_date'  => $this->input->get_post('transaction_date'),
             'transaction_no'    => $this->input->get_post('transaction_no'),
-            'biaya_admin'       => $this->input->get_post('biaya_admin'),
-            'biaya_medis'       => $this->input->get_post('biaya_medis'),
-            'biaya_obat'        => $this->input->get_post('biaya_obat'),
-            'total_biaya'       => $this->input->get_post('total_biaya'),
-            'jumlah_uang'       => $this->input->get_post('jumlah_uang'),
-            'kembalian'         => $this->input->get_post('kembalian'),
+            'biaya_admin'       => str_replace(".", "", $this->input->get_post('biaya_admin')),
+            'biaya_medis'       => str_replace(".", "", $this->input->get_post('biaya_medis')),
+            'biaya_obat'        => str_replace(".", "", $this->input->get_post('biaya_obat')),
+            'total_biaya'       => str_replace(".", "", $this->input->get_post('total_biaya')),
+            'jumlah_uang'       => str_replace(".", "", $this->input->get_post('jumlah_uang')),
+            'kembalian'         => str_replace(".", "", $this->input->get_post('kembalian')),
             'payment_status'    => $this->input->get_post('payment_status'),
             'is_cashier'        => 1,
             'update_date'       => date("Y-m-d H:i:s"),
@@ -107,8 +108,8 @@ class Logic_transaction extends CI_Model {
     
     public function processUpdateCashier(){
         $datas = array(
-            'jumlah_uang'       => $this->input->get_post('jumlah_uang'),
-            'kembalian'         => $this->input->get_post('kembalian'),
+            'jumlah_uang'       => str_replace(".", "", $this->input->get_post('jumlah_uang')),
+            'kembalian'         => str_replace(".", "", $this->input->get_post('kembalian')),
             'payment_status'    => $this->input->get_post('payment_status'),
             'update_date'       => date("Y-m-d H:i:s"),
         );

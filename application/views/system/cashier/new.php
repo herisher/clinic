@@ -27,6 +27,7 @@
     <script src="<?php echo base_url() ?>jquery.select-to-autocomplete.js"></script>
 
     <script src="<?php echo base_url() ?>dist/jquery.validate.js"></script>
+    <script src="<?php echo base_url() ?>js/jquery.format.price/jquery.format.price.js" type="text/javascript"></script>
 
     <script src="<?php echo base_url() ?>js/fileinput.js" type="text/javascript"></script>
     <script src="<?php echo base_url() ?>js/select2.min.js" type="text/javascript"></script>
@@ -89,6 +90,7 @@
                                         <option value="<?= $key ?>" <?php echo set_select("patient_id",$key); ?>><?= $val ?></option>
                                         <?php endforeach;?>
                                     </select>
+                                    <?php echo form_error('patient_name', '<br><font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-default btnAdd">Pilih</button><!--&nbsp;&nbsp;&nbsp;atau&nbsp;&nbsp;&nbsp;
@@ -175,44 +177,44 @@
                     <div class="col-md-6" onchange="change_total();">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Biaya Admin*</label>
+                                    <label class="col-sm-5 control-label">Biaya Admin (Rp)*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="number" name="biaya_admin" placeholder="Biaya Admin" id="biaya_admin" value="<?php echo set_value('biaya_admin', 0); ?>">
+                                    <input class="form-control" type="text" name="biaya_admin" placeholder="Biaya Admin" id="biaya_admin" value="<?php echo set_value('biaya_admin', 0); ?>">
                                     <?php echo form_error('biaya_admin', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Biaya Periksa*</label>
+                                    <label class="col-sm-5 control-label">Biaya Periksa (Rp)*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="number" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', 0); ?>">
+                                    <input class="form-control" type="text" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', 0); ?>">
                                     <?php echo form_error('biaya_medis', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Biaya Obat*</label>
+                                    <label class="col-sm-5 control-label">Biaya Obat (Rp)*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="number" name="biaya_obat" placeholder="Biaya Obat" id="biaya_obat" value="<?php echo set_value('biaya_obat', 0); ?>">
+                                    <input class="form-control" type="text" name="biaya_obat" placeholder="Biaya Obat" id="biaya_obat" value="<?php echo set_value('biaya_obat', 0); ?>">
                                     <?php echo form_error('biaya_obat', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Total Biaya*</label>
+                                    <label class="col-sm-5 control-label">Total Biaya (Rp)*</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="number" name="total_biaya" readonly="readonly" placeholder="Total Biaya" id="total_biaya" value="<?php echo set_value('total_biaya', 0); ?>">
+                                    <input class="form-control" type="text" name="total_biaya" readonly="readonly" placeholder="Total Biaya" id="total_biaya" value="<?php echo set_value('total_biaya', 0); ?>">
                                     <?php echo form_error('total_biaya', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Jumlah Uang</label>
+                                    <label class="col-sm-5 control-label">Jumlah Uang (Rp)</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="number" oninput="change_kembalian();" name="jumlah_uang" placeholder="Jumlah Uang" id="jumlah_uang" value="<?php echo set_value('jumlah_uang', 0); ?>">
+                                    <input class="form-control" type="text" name="jumlah_uang" placeholder="Jumlah Uang" id="jumlah_uang" value="<?php echo set_value('jumlah_uang', 0); ?>">
                                     <?php echo form_error('jumlah_uang', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Kembalian</label>
+                                    <label class="col-sm-5 control-label">Kembalian (Rp)</label>
                                 <div class="col-sm-6">
-                                    <input class="form-control" type="number" name="kembalian" readonly="readonly" placeholder="Kembalian" id="kembalian" value="<?php echo set_value('kembalian', 0); ?>">
+                                    <input class="form-control" type="text" name="kembalian" readonly="readonly" placeholder="Kembalian" id="kembalian" value="<?php echo set_value('kembalian', 0); ?>">
                                     <?php echo form_error('kembalian', '<font color="#FF0000">', '</font>'); ?>
                                 </div>
                             </div>
@@ -321,6 +323,16 @@ function windowClose() {
         var patient_id = $("#patient_id").val();
         if( patient_id ) {
             $("#data_pasien").show();
+            $(".clsDob").hide();
+            $(".clsAges").show();
+            $("#anamnesis").attr('readonly', 'readonly');
+            $("#patient_name").attr('readonly', 'readonly');
+            $("#patient_sex").attr('readonly', 'readonly');
+            $("#patient_dob").attr('readonly', 'readonly');
+            $("#patient_ages").attr('readonly', 'readonly');
+            $("#phone_number").attr('readonly', 'readonly');
+            $("#mobile_number").attr('readonly', 'readonly');
+            $("#address").attr('readonly', 'readonly');
         }
         
         $(".btnAdd").click(function(){
@@ -379,24 +391,46 @@ var d = new Date();
     $('#transaction_date').datepicker("setDate", startDate);
 </script>
 <script>
+    var biaya_admin = parseInt($('#biaya_admin').val().replace('.',''));
+    var biaya_medis = parseInt($('#biaya_medis').val().replace('.',''));
+    var biaya_obat = parseInt($('#biaya_obat').val().replace('.',''));
+    
+    var total = parseInt(biaya_admin+biaya_medis+biaya_obat);
+    $('#total_biaya').val(total);
+    
+    var jumlah_uang = parseInt($('#jumlah_uang').val().replace('.',''));
+    if( jumlah_uang ) {
+    var kembalian = parseInt(jumlah_uang - total);
+        $('#kembalian').val(kembalian);
+    } else {
+        $('#kembalian').val(0);
+    }
+    
     function change_total(){
-        var biaya_admin = parseInt($('#biaya_admin').val());
-        var biaya_medis = parseInt($('#biaya_medis').val());
-        var biaya_obat = parseInt($('#biaya_obat').val());
+        var biaya_admin = parseInt($('#biaya_admin').val().replace('.',''));
+        var biaya_medis = parseInt($('#biaya_medis').val().replace('.',''));
+        var biaya_obat = parseInt($('#biaya_obat').val().replace('.',''));
         
         var total = parseInt(biaya_admin+biaya_medis+biaya_obat);
         $('#total_biaya').val(total);
-    }
-    
-    function change_kembalian(){
-        var jumlah_uang = parseInt($('#jumlah_uang').val());
-        var total = parseInt($('#total_biaya').val());
         
-        if(jumlah_uang){
-            var kembalian = parseInt(jumlah_uang - total);
+        var jumlah_uang = parseInt($('#jumlah_uang').val().replace('.',''));
+        if( jumlah_uang ) {
+        var total = $('#total_biaya').val().replace('.','');
+        var kembalian = parseInt(jumlah_uang - total);
             $('#kembalian').val(kembalian);
         } else {
             $('#kembalian').val(0);
         }
     }
+    
+    $("#biaya_medis, #biaya_admin, #biaya_obat, #total_biaya, #jumlah_uang, #kembalian").priceFormat({
+        prefix: '',
+        clearPrefix: false,
+        thousandsSeparator: '.',
+        centsSeparator: ',',
+        centsLimit: 0,
+        clearOnEmpty: false,
+        allowNegative: true,
+    });
 </script>
