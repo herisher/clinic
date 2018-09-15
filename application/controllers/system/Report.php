@@ -69,9 +69,6 @@ class Report extends MY_Controller {
                             if($col_name == 'transaction_id') {
                                 array_push($cols, '"'.$no.'"');
                             }
-                            elseif($col_name == 'total_idr' || $col_name == 'qty') {
-                                array_push($cols, '"'.number_format($val[$col_name],0,',','.').'"');
-                            }
                             else {
                                 array_push($cols, '"'.$val[$col_name].'"');
                             }
@@ -80,7 +77,7 @@ class Report extends MY_Controller {
                     $total += $val["total_idr"];
                     echo mb_convert_encoding(join(",", $cols), 'SJIS-win', 'UTF-8') . "\r\n";
                 }
-                echo '"","","Total (Rp)","' . number_format($total,0,',','.') . '"'."\n";
+                echo '"","","Total (Rp)","' . $total . '"'."\n";
                 exit;
             }
         }
@@ -157,9 +154,6 @@ class Report extends MY_Controller {
                             if($col_name == 'transaction_id') {
                                 array_push($cols, '"'.$no.'"');
                             }
-                            elseif($col_name == 'total_biaya') {
-                                array_push($cols, '"'.number_format($val[$col_name],0,',','.').'"');
-                            }
                             else {
                                 array_push($cols, '"'.$val[$col_name].'"');
                             }
@@ -168,7 +162,7 @@ class Report extends MY_Controller {
                     $total += $val["total_biaya"];
                     echo mb_convert_encoding(join(",", $cols), 'SJIS-win', 'UTF-8') . "\r\n";
                 }
-                echo '"","","","Total (Rp)","' . number_format($total,0,',','.') . '"'."\n";
+                echo '"","","","Total (Rp)","' . $total . '"'."\n";
                 exit;
             }
         }
@@ -241,9 +235,6 @@ class Report extends MY_Controller {
                             if($col_name == 'transaction_id') {
                                 array_push($cols, '"'.$no.'"');
                             }
-                            elseif($col_name == 'biaya_medis') {
-                                array_push($cols, '"'.number_format($val[$col_name],0,',','.').'"');
-                            }
                             else {
                                 array_push($cols, '"'.$val[$col_name].'"');
                             }
@@ -252,7 +243,7 @@ class Report extends MY_Controller {
                     $total += $val["biaya_medis"];
                     echo mb_convert_encoding(join(",", $cols), 'SJIS-win', 'UTF-8') . "\r\n";
                 }
-                echo '"","","Total (Rp)","' . number_format($total,0,',','.') . '"'."\n";
+                echo '"","","Total (Rp)","' . $total . '"'."\n";
                 exit;
             }
         }
