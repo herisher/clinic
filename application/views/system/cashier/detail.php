@@ -98,24 +98,6 @@
                                         <div class="col-md-6">
                                             <div class="form-horizontal">
                                                 <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Biaya Admin (Rp)</label>
-                                                    <div class="col-sm-6">
-                                                        <h5> <?= $cashier['biaya_admin'] ? number_format($cashier['biaya_admin']) : '-'?> </h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Biaya Periksa (Rp)</label>
-                                                    <div class="col-sm-6">
-                                                        <h5> <?= $cashier['biaya_medis'] ? number_format($cashier['biaya_medis']) : '-'?> </h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Biaya Obat (Rp)</label>
-                                                    <div class="col-sm-6">
-                                                        <h5> <?= $cashier['biaya_obat'] ? number_format($cashier['biaya_obat']) : '-'?> </h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
                                                     <label class="col-sm-5 control-label">Total Biaya (Rp)</label>
                                                     <div class="col-sm-6">
                                                         <h5> <?= $cashier['total_biaya'] ? number_format($cashier['total_biaya']) : '-'?> </h5>
@@ -131,6 +113,12 @@
                                                     <label class="col-sm-5 control-label">Kembalian (Rp)</label>
                                                     <div class="col-sm-6">
                                                         <h5> <?= $cashier['kembalian'] ? number_format($cashier['kembalian']) : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Status Pembayaran</label>
+                                                    <div class="col-sm-6">
+                                                        <h5><?= $cashier['disp_status'] ? $cashier['disp_status'] : '-'?></h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -153,12 +141,6 @@
                                                     <label class="col-sm-5 control-label">Dokter Pemeriksa</label>
                                                     <div class="col-sm-6">
                                                         <h5><?= $doctor['doctor_name'] ? $doctor['doctor_name'] : '-'?></h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Status Pembayaran</label>
-                                                    <div class="col-sm-6">
-                                                        <h5><?= $cashier['disp_status'] ? $cashier['disp_status'] : '-'?></h5>
                                                     </div>
                                                 </div>
                                             </div>
