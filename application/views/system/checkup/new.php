@@ -249,7 +249,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-5 control-label">Biaya Periksa*</label>
+                                    <label class="col-sm-5 control-label">Biaya Periksa (Rp)*</label>
                                 <div class="col-sm-6">
                                     <input class="form-control" type="text" name="biaya_medis" placeholder="Biaya Periksa" id="biaya_medis" value="<?php echo set_value('biaya_medis', ''); ?>">
                                     <?php echo form_error('biaya_medis', '<font color="#FF0000">', '</font>'); ?>

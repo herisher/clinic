@@ -81,8 +81,8 @@
                         </div>
                         <p>
                             <a class="btn btn-primary" id="btn-advsearch" data-toggle="collapse" data-target="#advance-search" aria-expanded="false" ><i class="fa fa-search-plus"></i> &nbsp; Advance Search </a>
-                            <!--button type="submit" value="submit" class="btn btn-primary" target="_blank" ><i class="fa fa-download"></i> &nbsp; Download CSV</button-->
-                            <button type="button" href="<?php echo base_url();?>system/cashier/new" class="btn btn-primary pull-right" onclick="window.open('<?php echo base_url();?>system/cashier/new', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;"><i class="fa fa-file"></i> &nbsp; New Transaksi</button>
+                            <!--button type="submit" value="submit" class="btn btn-primary" target="_blank" ><i class="fa fa-download"></i> &nbsp; Download CSV</button>
+                            <button type="button" href="<?php echo base_url();?>system/cashier/new" class="btn btn-primary pull-right" onclick="window.open('<?php echo base_url();?>system/cashier/new', 'newwindow', 'width=' + screen.width + ',height=' + screen.height + ',scrollbars=yes'); return false;"><i class="fa fa-file"></i> &nbsp; New Transaksi</button-->
                         </p>
 						</form>
                         <br>

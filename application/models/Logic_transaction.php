@@ -58,7 +58,11 @@ class Logic_transaction extends CI_Model {
         
         $patient = $this->db->query("SELECT * FROM dtb_patient WHERE patient_id = ?", $patient_id)->row_array();
         
+        $this->load->model('Logic_transaction');
+        $transaction_no = $this->Logic_transaction->getCodeGenerated();
+        
         $data = array(
+            'transaction_no'    => $transaction_no,
             'patient_id'        => $patient_id,
             'doctor_id'         => $this->input->get_post('doctor_id'),
             'transaction_date'  => $this->input->get_post('transaction_date'),

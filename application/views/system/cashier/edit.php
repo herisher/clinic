@@ -122,24 +122,6 @@
                                         <div class="col-md-6">
                                             <div class="form-horizontal">
                                                 <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Biaya Admin (Rp)</label>
-                                                    <div class="col-sm-6">
-                                                        <h5> <?= $cashier['biaya_admin'] ? number_format($cashier['biaya_admin']) : '-'?> </h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Biaya Periksa (Rp)</label>
-                                                    <div class="col-sm-6">
-                                                        <h5> <?= $cashier['biaya_medis'] ? number_format($cashier['biaya_medis']) : '-'?> </h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Biaya Obat (Rp)</label>
-                                                    <div class="col-sm-6">
-                                                        <h5> <?= $cashier['biaya_obat'] ? number_format($cashier['biaya_obat']) : '-'?> </h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
                                                     <label class="col-sm-5 control-label">Total Biaya (Rp)</label>
                                                     <div class="col-sm-6">
                                                         <h5> <?= $cashier['total_biaya'] ? number_format($cashier['total_biaya']) : '-'?> </h5>
@@ -158,6 +140,18 @@
                                                         <input class="form-control" type="text" name="kembalian" readonly="readonly" placeholder="Kembalian" id="kembalian" value="<?php echo set_value('kembalian', $cashier['kembalian']); ?>">
                                                         <input class="form-control" type="hidden" name="total_biaya" readonly="readonly" id="total_biaya" value="<?php echo set_value('total_biaya', $cashier['total_biaya']); ?>">
                                                         <?php echo form_error('kembalian', '<font color="#FF0000">', '</font>'); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Status Pembayaran</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" type="text" name="payment_status" id="payment_status">
+                                                            <option value="" <?php echo set_select("payment_status",''); ?>>-Pilih-</option>
+                                                            <?php foreach( $status_option as $key => $val ) : ?>
+                                                            <option value="<?= $key ?>" <?php echo set_select("payment_status",$key,($cashier['payment_status'] == $key)); ?>><?= $val ?></option>
+                                                            <?php endforeach;?>
+                                                        </select>
+                                                        <?php echo form_error('payment_status', '<font color="#FF0000">', '</font>'); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,18 +175,6 @@
                                                     <label class="col-sm-5 control-label">Dokter Pemeriksa</label>
                                                     <div class="col-sm-6">
                                                         <h5><?= $doctor['doctor_name'] ? $doctor['doctor_name'] : '-'?></h5>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-5 control-label">Status Pembayaran</label>
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control" type="text" name="payment_status" id="payment_status">
-                                                            <option value="" <?php echo set_select("payment_status",''); ?>>-Pilih-</option>
-                                                            <?php foreach( $status_option as $key => $val ) : ?>
-                                                            <option value="<?= $key ?>" <?php echo set_select("payment_status",$key,($cashier['payment_status'] == $key)); ?>><?= $val ?></option>
-                                                            <?php endforeach;?>
-                                                        </select>
-                                                        <?php echo form_error('payment_status', '<font color="#FF0000">', '</font>'); ?>
                                                     </div>
                                                 </div>
                                             </div>
