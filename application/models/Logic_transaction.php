@@ -68,6 +68,7 @@ class Logic_transaction extends CI_Model {
             'layanan_tambahan'  => $this->input->get_post('layanan_tambahan'),
             'keterangan'        => $this->input->get_post('keterangan'),
             'alergi_obat'       => $this->input->get_post('alergi_obat'),
+            'resep'             => $this->input->get_post('resep'),
             'biaya_medis'       => str_replace(".", "", $this->input->get_post('biaya_medis')),
             'total_biaya'       => str_replace(".", "", $this->input->get_post('biaya_medis')),
             'document_fileid'    => $this->input->get_post('orig_name'),

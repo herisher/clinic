@@ -223,6 +223,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                    <label class="col-sm-5 control-label">Resep Obat</label>
+                                <div class="col-sm-6">
+                                    <textarea class="form-control" type="text" name="resep" placeholder="Resep Obat" id="resep"><?php echo set_value('resep', ''); ?></textarea>
+                                    <?php echo form_error('resep', '<br><font color="#FF0000">', '</font>'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                     <label class="col-sm-5 control-label">Tanggal Periksa</label>
                                 <div class="col-sm-6">
                                     <input class="form-control" type="text" name="transaction_date" placeholder="Tanggal Periksa" id="transaction_date" value="<?php echo set_value('transaction_date', ''); ?>">

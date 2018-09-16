@@ -138,6 +138,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Resep Obat</label>
+                                                    <div class="col-sm-6">
+                                                        <h5> <?= $checkup['resep'] ? $checkup['resep'] : '-'?> </h5>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-sm-5 control-label">Tanggal Periksa</label>
                                                     <div class="col-sm-6">
                                                         <h5> <?= $checkup['transaction_date'] ? $checkup['transaction_date'] : '-'?> </h5>
@@ -158,7 +164,13 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-5 control-label">Dokumen Penunjang</label>
                                                     <div class="col-sm-6">
-                                                        <?php if( strpos($checkup['document_fileid'], "jpg") ) : ?>
+                                                        <?php 
+                                                            $mime = array("jpg","jpeg","png","gif","bmp");
+                                                        if( strpos(strtolower($checkup['document_fileid']), "jpg") ||
+                                                            strpos(strtolower($checkup['document_fileid']), "jpeg") || 
+                                                            strpos(strtolower($checkup['document_fileid']), "png") ||
+                                                            strpos(strtolower($checkup['document_fileid']), "gif") ||
+                                                            strpos(strtolower($checkup['document_fileid']), "bmp")) : ?>
                                                         <?php if($checkup['document_fileid']): ?>
 
                                                     <div id="view" class="collapse">
@@ -167,7 +179,7 @@
                                                     <a class="btn btn-primary" data-toggle="collapse" data-target="#view" aria-expanded="false" ><i class="fa fa-search-plus"></i>View</a>
                                                     <?php else: ?><?php endif; ?>
                                                         <?php else : ?>
-                                                        <a href="<?= base_url(); ?>upload/docs/<?= $checkup['document_fileid']?>"><h5><?= $checkup['document_fileid']?></h5></a>
+                                                        <a href="<?= base_url(); ?>upload/docs/<?= $checkup['document_fileid']?>" target="_blank"><h5><?= $checkup['document_fileid']?></h5></a>
                                                         <?php endif;?>
                                                     </div>
                                                 </div>

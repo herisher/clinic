@@ -177,6 +177,11 @@ $config = array(
             'rules' => '',
             ),
         array(
+            'field' => 'resep',
+            'label' => 'Resep',
+            'rules' => '',
+            ),
+        array(
             'field' => 'transaction_date',
             'label' => 'Tanggal Periksa',
             'rules' => 'required',
